@@ -3,21 +3,21 @@
     "files":  [
                   {
                       "path":  "Data/Pack03.hf",
-                      "sha256":  "ef06323ee242f8fa44315e791f04d6e14bb744196c645629a9869c2ec27abc8a",
-                      "size":  1256,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.0/Pack03.hf"
+                      "sha256":  "b3023114a1192baa644c97d1d573769016fa7e01be8f33eae941436ed49fee8f",
+                      "size":  1208,
+                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.3/Pack03.hf"
                   },
                   {
                       "path":  "Data/Pack03.pf",
-                      "sha256":  "1a3d7ce41fdba6c46dd238b68b0aebf37fdcb4cf588c4eda514b96657651df61",
-                      "size":  108997518,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.0/Pack03.pf"
+                      "sha256":  "ac58abde556032ce6a63bd89c39aba23cd7c4a857c1f8f492d33e24bb4b63279",
+                      "size":  96904368,
+                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.3/Pack03.pf"
                   },
                   {
                       "path":  "DigimonTerminus.Launcher.exe",
-                      "sha256":  "5f3913019e09d9ec61b57e8b9e449a3c3e428cfa8ced853d8aa6f3da8c04e5e8",
-                      "size":  597504,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.1/DigimonTerminus.Launcher.exe"
+                      "sha256":  "cb568ff5b9cf11323780a2604fd986d0555c9470340024a8a9d960da54359655",
+                      "size":  598528,
+                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.3/DigimonTerminus.Launcher.exe"
                   },
                   {
                       "path":  "DigimonTerminus.Launcher.exe.config",
