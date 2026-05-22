@@ -1,77 +1,83 @@
 {
-    "version":  1,
-    "files":  [
-                  {
-                      "path":  "Data/Pack03.hf",
-                      "sha256":  "70cb530e5488dd8655915657380fcc4d5d0ebf8a6a47942869c187d5446455da",
-                      "size":  1256,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.6/Pack03.hf"
-                  },
-                  {
-                      "path":  "Data/Pack03.pf",
-                      "sha256":  "d91db9bed03f077e90b17d6e72485959f96b31d18ce4821e61dd2b95fd65a0f6",
-                      "size":  102071653,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.6/Pack03.pf"
-                  },
-                  {
-                      "path":  "DigimonTerminus.Launcher.exe",
-                      "sha256":  "4540ba8296a7748f613d6b6a01cef44ddfcd858572302115ec033d21ac127d24",
-                      "size":  602624,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/DigimonTerminus.Launcher.exe"
-                  },
-                  {
-                      "path":  "DigimonTerminus.Launcher.exe.config",
-                      "sha256":  "48a6992a2971878ce935000ebad4fcb76ae1cebd0d0a6eb307aee60879b048a1",
-                      "size":  589,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.1/DigimonTerminus.Launcher.exe.config"
-                  },
-                  {
-                      "path":  "art/background.gif",
-                      "sha256":  "4fd820c8748e5fecd0d863d6e8f7961b0ba072d5ffa2ca09bb0ca57a3d41b8ce",
-                      "size":  781610,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/background.gif"
-                  },
-                  {
-                      "path":  "art/background.jpg",
-                      "sha256":  "c48b8ea9a22f9708aca89f6a67db2ab9040d31c6c456eba1e1d9bd3365feb987",
-                      "size":  62596,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/background.jpg"
-                  },
-                  {
-                      "path":  "art/banner-title.gif",
-                      "sha256":  "4d9dc14909399ab90d0a3eedc1a35f14813db0a2ad27bdb47b8eb7aaecb577b0",
-                      "size":  16091,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/banner-title.gif"
-                  },
-                  {
-                      "path":  "art/banner-title.png",
-                      "sha256":  "909d12aa54b28ed2b1e48d242bd03c10fd9cf86192fec615e6f4f1379beadc90",
-                      "size":  6496,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/banner-title.png"
-                  },
-                  {
-                      "path":  "art/btn-close-default.png",
-                      "sha256":  "b860fcabdd67e542c1871be474d35bec09653aca14d7a8c9a66f6e9eb81e5503",
-                      "size":  1275,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.2/btn-close-default.png"
-                  },
-                  {
-                      "path":  "art/btn-close-hover.png",
-                      "sha256":  "0c7f1df7c88144d3ca1c487b8a59f616112904b281272c2b37a8d263c3393d0b",
-                      "size":  1291,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.2/btn-close-hover.png"
-                  },
-                  {
-                      "path":  "art/btn-play-default.png",
-                      "sha256":  "ca0028a32fdc3795489ceeb3ec397b7cc0fd9ebcb96fd59e9cca31886f9b95f3",
-                      "size":  7369,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/btn-play-default.png"
-                  },
-                  {
-                      "path":  "art/btn-play-hover.png",
-                      "sha256":  "c14c27ec7d1289f83c53e41dd0d82ae8d6bdcf4d731eef7e1f90f16c70086c1a",
-                      "size":  8427,
-                      "url":  "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/btn-play-hover.png"
-                  }
-              ]
+    "version": 1,
+    "files": [
+        {
+            "path": "Data/Pack03.hf",
+            "sha256": "70cb530e5488dd8655915657380fcc4d5d0ebf8a6a47942869c187d5446455da",
+            "size": 1256,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.6/Pack03.hf"
+        },
+        {
+            "path": "Data/Pack03.pf",
+            "sha256": "d91db9bed03f077e90b17d6e72485959f96b31d18ce4821e61dd2b95fd65a0f6",
+            "size": 102071653,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.6/Pack03.pf"
+        },
+        {
+            "path": "DigimonTerminus.Launcher.exe",
+            "sha256": "e89784a24c13f1db48f2a73038ea425aaaec3de2991827a25addf27641f7e797",
+            "size": 607744,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.7/DigimonTerminus.Launcher.exe"
+        },
+        {
+            "path": "DigimonTerminus.Launcher.exe.config",
+            "sha256": "48a6992a2971878ce935000ebad4fcb76ae1cebd0d0a6eb307aee60879b048a1",
+            "size": 589,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.1/DigimonTerminus.Launcher.exe.config"
+        },
+        {
+            "path": "LauncherLib/TerminusAutologin.dll",
+            "sha256": "4b9aad0aa1e9e8bf45ded2d9890dfe8d464036f89094465ca14b3335d49a32e1",
+            "size": 18432,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.7/TerminusAutologin.dll"
+        },
+        {
+            "path": "art/background.gif",
+            "sha256": "4fd820c8748e5fecd0d863d6e8f7961b0ba072d5ffa2ca09bb0ca57a3d41b8ce",
+            "size": 781610,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/background.gif"
+        },
+        {
+            "path": "art/background.jpg",
+            "sha256": "c48b8ea9a22f9708aca89f6a67db2ab9040d31c6c456eba1e1d9bd3365feb987",
+            "size": 62596,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/background.jpg"
+        },
+        {
+            "path": "art/banner-title.gif",
+            "sha256": "4d9dc14909399ab90d0a3eedc1a35f14813db0a2ad27bdb47b8eb7aaecb577b0",
+            "size": 16091,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/banner-title.gif"
+        },
+        {
+            "path": "art/banner-title.png",
+            "sha256": "909d12aa54b28ed2b1e48d242bd03c10fd9cf86192fec615e6f4f1379beadc90",
+            "size": 6496,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/banner-title.png"
+        },
+        {
+            "path": "art/btn-close-default.png",
+            "sha256": "b860fcabdd67e542c1871be474d35bec09653aca14d7a8c9a66f6e9eb81e5503",
+            "size": 1275,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.2/btn-close-default.png"
+        },
+        {
+            "path": "art/btn-close-hover.png",
+            "sha256": "0c7f1df7c88144d3ca1c487b8a59f616112904b281272c2b37a8d263c3393d0b",
+            "size": 1291,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.2/btn-close-hover.png"
+        },
+        {
+            "path": "art/btn-play-default.png",
+            "sha256": "ca0028a32fdc3795489ceeb3ec397b7cc0fd9ebcb96fd59e9cca31886f9b95f3",
+            "size": 7369,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/btn-play-default.png"
+        },
+        {
+            "path": "art/btn-play-hover.png",
+            "sha256": "c14c27ec7d1289f83c53e41dd0d82ae8d6bdcf4d731eef7e1f90f16c70086c1a",
+            "size": 8427,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.4/btn-play-hover.png"
+        }
+    ]
 }
