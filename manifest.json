@@ -1,4 +1,4 @@
-{
+﻿{
     "version": 1,
     "files": [
         {
@@ -15,7 +15,7 @@
         },
         {
             "path": "DigimonTerminus.Launcher.exe",
-            "sha256": "6fa811cd2c42e0ceba701aafb7ed30ccf9bcc30175d5fc6e2440eacf591b4230",
+            "sha256": "050ef56f238267d8f90fc9af928e910dd6dff6f0eeb1d93b67eed50a2c1af7ee",
             "size": 613376,
             "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.8/DigimonTerminus.Launcher.exe"
         },
