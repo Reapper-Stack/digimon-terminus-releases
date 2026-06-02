@@ -15,9 +15,9 @@
         },
         {
             "path": "GDMO.exe",
-            "sha256": "36fada6669de5d2cf6a7541367f6c185ea82b19a988256cc2bd2e466f5b617e5",
+            "sha256": "bd10423dda5d34141c83dce9a6b4d661fc372b627c567cefa94c0580e9850cb5",
             "size": 7973296,
-            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.4.7/GDMO.exe"
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.4.8/GDMO.exe"
         },
         {
             "path": "DigimonTerminus.Launcher.exe",
