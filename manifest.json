@@ -69,15 +69,15 @@
         },
         {
             "path": "Data/Pack03.pf",
-            "sha256": "9104916861993b704aa821e8870658e333afdeef341860e14275318bbf2c3374",
-            "size": 96504139,
-            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.0/Pack03.pf"
+            "sha256": "687c5ca22c99092c8854d4ed2cb3fce361548836afe00ec3366b3c3bc818dd82",
+            "size": 96506275,
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.2/Pack03.pf"
         },
         {
             "path": "Data/Pack03.hf",
-            "sha256": "6bfaab8c01a1fc867638ea755f73a0c000a0f8110e601fb594039a8a42806800",
+            "sha256": "c09b3bb0bb5da62f9c5189f41fcd63a73a3cc777420c45c34c041ad83a75593f",
             "size": 1208,
-            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.0/Pack03.hf"
+            "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.2/Pack03.hf"
         },
         {
             "path": "Data/Pack01.hf",
