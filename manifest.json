@@ -9,9 +9,9 @@
   },
   {
    "path": "DigimonTerminus.Launcher.exe",
-   "sha256": "ff1af9b56597688cf5588771f014cdd5ddeb70a47b774dcb072b7d1f7b3a3f08",
+   "sha256": "6f247254c2c5f5f9dbff46e988a35bf6a606ab1836628a0d7fc2aac61805d04d",
    "size": 632240,
-   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.8/DigimonTerminus.Launcher.exe"
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.0/DigimonTerminus.Launcher.exe"
   },
   {
    "path": "DigimonTerminus.Launcher.exe.config",
