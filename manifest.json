@@ -3,15 +3,15 @@
  "files": [
   {
    "path": "GDMO.exe",
-   "sha256": "5c9c0946c2665bedf226617aab3797d3f9e62aff4697298ebb273845ad1aefaf",
-   "size": 7984048,
-   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.9/GDMO.exe"
+   "sha256": "4d62ba3be663d2ec354b0dde2df5f3305058aace1693aa503d4922d7db86e235",
+   "size": 7985584,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.1/GDMO.exe"
   },
   {
    "path": "DigimonTerminus.Launcher.exe",
-   "sha256": "6f247254c2c5f5f9dbff46e988a35bf6a606ab1836628a0d7fc2aac61805d04d",
-   "size": 632240,
-   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.0/DigimonTerminus.Launcher.exe"
+   "sha256": "2a06e5977c803c7c4f6389153d1c7f47f6e5e43e3ac74b8dab226849fd244a4f",
+   "size": 635824,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.1/DigimonTerminus.Launcher.exe"
   },
   {
    "path": "DigimonTerminus.Launcher.exe.config",
