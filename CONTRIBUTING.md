@@ -23,11 +23,29 @@ reaches players directly. Treat changes to it with care.
 4. **Open a PR.** CI runs the same validator on the PR; wait for the
    **validate** check to go green before merging.
 
+## Validate inside the release pipeline (most important guard)
+
+The release pipeline commits `manifest.json` **directly to `main`**, so a broken
+manifest reaches players without ever going through a PR. CI on `main` reports a
+failure only *after* the push, and branch protection can't gate a direct push on
+a check that runs after it. The reliable guard is therefore to run the validator
+**inside the pipeline, before it commits**:
+
+```sh
+python3 scripts/validate_manifest.py || exit 1   # abort the release on failure
+```
+
+Because of this direct-to-`main` flow, do **not** enable "Require a pull request
+before merging" on `main` — it would block the pipeline. Requiring the status
+check to pass still only affects PR merges, not the pipeline's direct pushes.
+
 ## Invariants the validator enforces
 
 - `sha256` / `sha256_after` are 64-char lowercase hex.
 - `size` and `offset` are non-negative integers.
 - Every `url` is a pinned `…/releases/download/vX.Y.Z/…` URL for this repo.
+- Paths stay inside the install root: relative, forward-slashed, no `..`,
+  drive letter, or control characters.
 - No two `files` entries share a `path`.
 - **No two patches write overlapping byte ranges into the same target file.**
   Patch application order is not guaranteed, so any overlap is a defect.

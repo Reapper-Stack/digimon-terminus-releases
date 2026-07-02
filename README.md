@@ -64,6 +64,7 @@ python3 scripts/validate_manifest.py
 
 It checks JSON validity (BOM tolerated), required fields and types, 64-char
 lowercase-hex hashes, non-negative sizes/offsets, pinned release URLs,
+install-root-safe paths (no `..`, absolute, drive-letter, or backslash paths),
 duplicate paths, and overlapping patch byte-ranges within the same target file.
 Exit code `0` = valid, `1` = problems printed to stderr.
 

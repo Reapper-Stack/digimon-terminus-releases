@@ -13,7 +13,10 @@ Checks:
   - SHA-256 values are 64-char lowercase hex
   - sizes/offsets are non-negative integers
   - URLs point at this repo's GitHub Releases and are pinned to a vX.Y tag
+  - paths stay inside the install root (no '..', absolute, drive-letter,
+    backslash, or control-character paths)
   - no duplicate file paths
+  - no two patches write overlapping byte ranges into the same target file
 
 Exit code 0 = valid, 1 = one or more problems (all printed).
 """
@@ -75,8 +78,19 @@ def validate(manifest_path: Path) -> list[str]:
         path = entry.get("path")
         if not isinstance(path, str) or not path:
             errors.append(f"{where}: path must be a non-empty string")
-        elif "\\" in path:
-            errors.append(f"{where}: path uses backslashes, use forward slashes: {path!r}")
+        else:
+            # The launcher writes files to disk using `path`. Reject anything
+            # that could escape the install root or misbehave on Windows.
+            if "\\" in path:
+                errors.append(f"{where}: path uses backslashes, use forward slashes: {path!r}")
+            if path.startswith("/"):
+                errors.append(f"{where}: path must be relative, not absolute: {path!r}")
+            if ".." in path.split("/"):
+                errors.append(f"{where}: path escapes the install root with '..': {path!r}")
+            if re.match(r"^[A-Za-z]:", path):
+                errors.append(f"{where}: path has a drive-letter prefix: {path!r}")
+            if any(ord(c) < 32 for c in path):
+                errors.append(f"{where}: path contains control characters: {path!r}")
 
         size = entry.get(size_field)
         if not _int(size) or size < 0:
