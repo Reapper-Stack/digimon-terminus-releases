@@ -1,0 +1,19 @@
+# This repo tracks only the manifest, tooling, and docs — never release binaries.
+# Guard against accidentally committing large assets that belong in GitHub Releases.
+*.exe
+*.pf
+*.hf
+*.dat
+*.nif
+*.kf
+*.kfm
+*.wav
+*.tga
+*.bin
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+__pycache__/
+*.pyc

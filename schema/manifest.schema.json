@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Reapper-Stack/digimon-terminus-releases/schema/manifest.schema.json",
+  "title": "Digimon Terminus release manifest",
+  "description": "Auto-update manifest consumed by the DigimonTerminus launcher. Lists every file the client must have (full downloads) plus binary patches applied at a byte offset inside an existing pack file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "files"],
+  "properties": {
+    "version": {
+      "description": "Manifest schema version. Bump only when the manifest format itself changes, not on every release.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "files": {
+      "description": "Full files the launcher downloads and verifies by SHA-256. A file is (re)downloaded when its local hash does not match.",
+      "type": "array",
+      "items": { "$ref": "#/definitions/file" }
+    },
+    "patches": {
+      "description": "Binary patches written at a byte offset inside an already-present file (e.g. a large pack). Used to avoid re-downloading a whole multi-GB pack for a small change.",
+      "type": "array",
+      "items": { "$ref": "#/definitions/patch" }
+    }
+  },
+  "definitions": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Lowercase hex SHA-256, exactly 64 characters."
+    },
+    "releaseUrl": {
+      "type": "string",
+      "pattern": "^https://github\\.com/Reapper-Stack/digimon-terminus-releases/releases/download/v[0-9]+(\\.[0-9]+)*/[^\\s]+$",
+      "description": "GitHub Releases download URL for this org/repo, pinned to a version tag."
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size", "url"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Destination path relative to the client install root. Forward slashes.",
+          "pattern": "^[^\\\\]+$"
+        },
+        "sha256": { "$ref": "#/definitions/sha256" },
+        "size": { "type": "integer", "minimum": 0, "description": "Expected file size in bytes." },
+        "url": { "$ref": "#/definitions/releaseUrl" }
+      }
+    },
+    "patch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "offset", "size", "sha256_after", "url", "label"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Target file the patch bytes are written into.",
+          "pattern": "^[^\\\\]+$"
+        },
+        "offset": { "type": "integer", "minimum": 0, "description": "Byte offset within the target file where the patch payload is written." },
+        "size": { "type": "integer", "minimum": 0, "description": "Length in bytes of the patch payload." },
+        "sha256_after": { "$ref": "#/definitions/sha256", "description": "Expected SHA-256 of the target file AFTER the patch is applied." },
+        "url": { "$ref": "#/definitions/releaseUrl" },
+        "label": { "type": "string", "minLength": 1, "description": "Human-readable name for the patch, for logs/UI." }
+      }
+    }
+  }
+}

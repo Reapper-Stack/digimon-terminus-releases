@@ -1,0 +1,33 @@
+name: Validate manifest
+
+# Guards manifest.json before a broken release manifest can reach players'
+# launchers. Runs on every push/PR that touches the manifest, its schema, or
+# the validator itself.
+on:
+  push:
+    paths:
+      - "manifest.json"
+      - "schema/**"
+      - "scripts/validate_manifest.py"
+      - ".github/workflows/validate-manifest.yml"
+  pull_request:
+    paths:
+      - "manifest.json"
+      - "schema/**"
+      - "scripts/validate_manifest.py"
+      - ".github/workflows/validate-manifest.yml"
+  workflow_dispatch:
+
+# Least privilege: this job only reads the checked-out tree.
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Ubuntu runners already ship Python 3, so no setup action is needed.
+      - name: Validate manifest.json
+        run: python3 scripts/validate_manifest.py
