@@ -63,8 +63,9 @@ python3 scripts/validate_manifest.py
 ```
 
 It checks JSON validity (BOM tolerated), required fields and types, 64-char
-lowercase-hex hashes, non-negative sizes/offsets, pinned release URLs, and
-duplicate paths. Exit code `0` = valid, `1` = problems printed to stderr.
+lowercase-hex hashes, non-negative sizes/offsets, pinned release URLs,
+duplicate paths, and overlapping patch byte-ranges within the same target file.
+Exit code `0` = valid, `1` = problems printed to stderr.
 
 The same check runs automatically in CI
 ([`.github/workflows/validate-manifest.yml`](.github/workflows/validate-manifest.yml))

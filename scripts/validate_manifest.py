@@ -106,6 +106,7 @@ def validate(manifest_path: Path) -> list[str]:
             else:
                 seen_paths[path] = i
 
+    ranges_by_target: dict[str, list] = {}
     for i, entry in enumerate(patches):
         where = f"patches[{i}]"
         if not isinstance(entry, dict):
@@ -124,6 +125,24 @@ def validate(manifest_path: Path) -> list[str]:
         label = entry.get("label")
         if not isinstance(label, str) or not label:
             errors.append(f"{where}: label must be a non-empty string")
+        # Record the byte range for the overlap check below, but only when
+        # offset/size are usable — a bad value is already reported above.
+        path = entry.get("path")
+        size = entry.get("size")
+        if isinstance(path, str) and path and _int(offset) and offset >= 0 and _int(size) and size >= 0:
+            ranges_by_target.setdefault(path, []).append((offset, size, label or where, i))
+
+    # Two patches that write overlapping byte ranges into the same target file
+    # would corrupt each other. Order of application is not guaranteed, so any
+    # overlap is a defect regardless of which runs first.
+    for target, ranges in ranges_by_target.items():
+        ordered = sorted(ranges, key=lambda r: r[0])
+        for (o1, s1, l1, i1), (o2, s2, l2, i2) in zip(ordered, ordered[1:]):
+            if o1 + s1 > o2:
+                errors.append(
+                    f"patches: overlapping writes into {target!r}: "
+                    f"{l1!r} [{o1}, {o1 + s1}) overlaps {l2!r} [{o2}, {o2 + s2})"
+                )
 
     if not errors:
         print(
