@@ -7,8 +7,11 @@ reaches players directly. Treat changes to it with care.
 ## Cutting a release
 
 1. **Upload the binaries** as assets on a new **GitHub Release** with a `vX.Y.Z`
-   tag. The asset is immutable once published — a given URL always resolves to
-   the same bytes.
+   tag. Treat a published release as frozen: GitHub still allows editing or
+   deleting releases and their assets (unless immutable releases are enabled in
+   the repo settings), and the manifest pins URLs into old releases — deleting
+   one breaks every player whose launcher still needs a file from it. The
+   `Check manifest URLs` workflow probes all manifest URLs daily to catch this.
 2. **Update `manifest.json`**:
    - For a full file: set its `path`, `sha256`, `size`, and the release `url`.
    - For a patch: set `path` (the target file), `offset`, `size`,

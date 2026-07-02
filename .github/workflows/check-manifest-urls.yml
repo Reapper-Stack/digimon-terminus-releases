@@ -1,0 +1,27 @@
+name: Check manifest URLs
+
+# validate-manifest.yml proves the manifest is well-formed; this proves the
+# release assets it points at are still downloadable. Releases referenced by
+# the manifest must never be deleted — this catches it within a day if one is.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  push:
+    paths:
+      - "manifest.json"
+      - "scripts/check_manifest_urls.py"
+      - "scripts/url-check-ignore.txt"
+      - ".github/workflows/check-manifest-urls.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check all manifest asset URLs are live
+        run: python3 scripts/check_manifest_urls.py
