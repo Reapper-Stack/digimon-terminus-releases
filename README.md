@@ -51,7 +51,10 @@ Tooling that reads it should decode with `utf-8-sig`. The authoritative shape is
 ```
 
 All release URLs are pinned to a version tag (`…/download/vX.Y.Z/…`) so a given
-manifest entry always resolves to the same immutable asset.
+manifest entry always resolves to the same asset. Releases referenced by the
+manifest must never be deleted or have assets replaced; a scheduled workflow
+([`.github/workflows/check-manifest-urls.yml`](.github/workflows/check-manifest-urls.yml))
+verifies daily that every manifest URL is still downloadable.
 
 ## Validation
 
