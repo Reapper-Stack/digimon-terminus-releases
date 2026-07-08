@@ -9,9 +9,9 @@
   },
   {
    "path": "DigimonTerminus.Launcher.exe",
-   "sha256": "b26982fa9fc48f3c9daa6c82fc075c9453df67129404f3aa783aabf6495baf1f",
-   "size": 638896,
-   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.6/DigimonTerminus.Launcher.exe"
+   "sha256": "2482d442991f9a4e70aa4748e84b2ca81dbad2c449a7c543992e55a73cd28f27",
+   "size": 651696,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.7/DigimonTerminus.Launcher.exe"
   },
   {
    "path": "DigimonTerminus.Launcher.exe.config",
@@ -2526,6 +2526,36 @@
    "sha256": "25059c22adfb04892e65876be8ae5cdb0c663e052e59cd766c96e6d4abd75394",
    "size": 743124,
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.5/sound_beelzebumon_c_beelzebumon_c_skill02.wav"
+  },
+  {
+   "path": "LauncherLib/Microsoft.Web.WebView2.Core.dll",
+   "sha256": "616157863b1cd1f1330b4914dd013adef10a4ce8cd819598fd6bd4037c2c1646",
+   "size": 567896,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.7/Microsoft.Web.WebView2.Core.dll"
+  },
+  {
+   "path": "LauncherLib/Microsoft.Web.WebView2.WinForms.dll",
+   "sha256": "ff1197c54ec571fd82e1e97a45e1000240c739b0bdc89536db85a612ecc5fafd",
+   "size": 38360,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.7/Microsoft.Web.WebView2.WinForms.dll"
+  },
+  {
+   "path": "LauncherLib/WebView2Loader.dll",
+   "sha256": "dd4c6797ff04625934a14aa7b22d76b847c8b6bb1cccd7c587ee6fec6b636121",
+   "size": 116184,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.7/WebView2Loader.dll"
+  },
+  {
+   "path": "art/html/index.html",
+   "sha256": "1dfad857e8e109d854d3dc6e0ddea18f1c9d58a6cddd18b2585c9c43e8f40a2e",
+   "size": 1483,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.7/index.html"
+  },
+  {
+   "path": "art/html/background.gif",
+   "sha256": "4fd820c8748e5fecd0d863d6e8f7961b0ba072d5ffa2ca09bb0ca57a3d41b8ce",
+   "size": 781610,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.7/background.gif"
   }
  ],
  "patches": [
