@@ -4,31 +4,470 @@
 <meta charset="utf-8">
 <title>Digimon Terminus</title>
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #0a0c18;
-               cursor: default; user-select: none; -webkit-user-select: none; }
-  .bg   { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
-  /* cyan scanline drift over the art */
-  .scan { position: absolute; inset: 0; pointer-events: none;
-          background: linear-gradient(180deg, transparent 0%, rgba(0,212,255,.05) 50%, transparent 100%);
-          background-size: 100% 8px; animation: scan 9s linear infinite; }
-  @keyframes scan { from { background-position-y: 0; } to { background-position-y: 429px; } }
-  /* gold-cyan energy line above the status bar */
-  .glow { position: absolute; left: 0; right: 0; bottom: 46px; height: 2px;
-          background: linear-gradient(90deg, transparent, #00d4ff, #c8a84b, transparent);
-          animation: pulse 3s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity: .25; } 50% { opacity: .85; } }
+  /* Faithful high-res remake of the shipped background.gif artwork:
+       compass emblem (cyan tick bezel + rotating pointers + gold hexagon + T monogram)
+       D I G I M O N  ·  serif gold TERMINUS  ·  divider + tagline
+       HUD corner frames, rising data-rain (teal/gold), star field.
+     Palette sampled from the art: void #000208 · teal line #17505F / bright #2FB6D8
+       gold #D0B060 body -> #F7E7A8 highlight · silver #C9D4DC.
+     Fluid vh-based layout (772x429 and 1158x644 share the same aspect ratio).
+     The native launcher draws NODE_ID/STATUS top-left and buttons/status bar —
+     those zones are intentionally left clear. */
+  html, body { margin:0; height:100%; overflow:hidden; cursor:default;
+               user-select:none; -webkit-user-select:none;
+               background:#000208; font-family:"Segoe UI",sans-serif; }
+  body { opacity:0; animation:bootfade 1s ease-out .1s forwards; }
+  @keyframes bootfade { to { opacity:1 } }
+  .layer { position:absolute; inset:0; }
+
+  /* Version gate: page controls/HUD stay hidden until the launcher proves it
+     speaks the bridge (first hud message = v0.6.8+). On older launchers the
+     native buttons/status remain, over the new art - no doubled UI ever. */
+  body:not(.htmlui) .htmlctl { display:none !important; }
+  /* micro-parallax carriers (JS sets --px/--py in [-1,1]) */
+  .plx  { transition:transform 1.2s cubic-bezier(.2,.6,.2,1);
+          transform:translate(calc(var(--px,0)*5px), calc(var(--py,0)*4px)); }
+  .plx2 { transition:transform 1.2s cubic-bezier(.2,.6,.2,1);
+          transform:translate(calc(var(--px,0)*2px), calc(var(--py,0)*1.5px)); }
+
+  .backdrop { background:
+      radial-gradient(ellipse 60% 45% at 50% 30%, #0a222c33 0%, transparent 70%),
+      #000208; }
+  .vig { pointer-events:none;
+    background:radial-gradient(ellipse 110% 95% at 50% 42%, transparent 55%, rgba(0,1,5,.75) 100%); }
+  .aura { position:absolute; left:50%; top:26.9%; width:52vh; height:52vh; translate:-50% -50%;
+    pointer-events:none; border-radius:50%;
+    background:radial-gradient(circle, #14424f2e 0%, #0a222c1a 45%, transparent 70%);
+    animation:breathe 4s ease-in-out infinite; }
+
+  /* ---- HUD frame: thin teal lines + corner brackets, like the art ---- */
+  .frame { pointer-events:none; }
+  .frame i { position:absolute; background:#17505F; }
+  /* the top line ends before the gear/close buttons (right:50px + 32px + margin) */
+  .frame .top    { left:24px; right:100px; top:17px;   height:1px; opacity:.7;
+                   -webkit-mask:linear-gradient(90deg,#000 92%,transparent);
+                           mask:linear-gradient(90deg,#000 92%,transparent); }
+  .frame .bottom { left:24px; right:24px; bottom:52px; height:1px; opacity:.7 }
+  .frame b { position:absolute; width:18px; height:18px; border:1px solid #2FB6D8AA; }
+  .frame .tl { top:10px;  left:10px;  border-right:none; border-bottom:none; }
+  .frame .tr { top:10px;  right:10px; border-left:none;  border-bottom:none; }
+
+  /* bottom corners: PIXEL DISSOLVE clusters (3x3 data pixels dispersing/reforming) */
+  .pix { position:absolute; bottom:46px; width:16px; height:16px; pointer-events:none; }
+  .pix.l { left:10px; } .pix.r { right:10px; }
+  .pix i { position:absolute; width:4px; height:4px; background:#E3C56E;
+    animation:pixfade var(--d) ease-in-out infinite; animation-delay:var(--dl); }
+  .pix i.t { background:#2FB6D8; }
+  @keyframes pixfade { 0%,100%{ opacity:.15; transform:translate(0,0) }
+                       45%    { opacity:1;  transform:translate(0,0) }
+                       70%    { opacity:0;  transform:translate(var(--sx), var(--sy)) } }
+
+  /* ---- star field ---- */
+  .star { position:absolute; border-radius:50%; width:2px; height:2px;
+    animation:twinkle var(--d) ease-in-out infinite; opacity:.12; }
+  @keyframes twinkle { 0%,100%{opacity:.06} 50%{opacity:.65} }
+
+  /* ---- rising data-rain streaks (dotted columns, teal + gold) ---- */
+  .streak { position:absolute; width:1.5px; overflow:visible;
+    background:repeating-linear-gradient(180deg, var(--c) 0 1.6px, transparent 1.6px 11px);
+    -webkit-mask:linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+            mask:linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+    animation:rain var(--d) linear infinite; animation-delay:var(--dl); opacity:0; }
+  @keyframes rain { 0%{ transform:translateY(0); opacity:0 } 10%{ opacity:var(--o) }
+                    90%{ opacity:var(--o) } 100%{ transform:translateY(-46vh); opacity:0 } }
+
+  /* ---- faint scattered hexagons ---- */
+  .decor { pointer-events:none; opacity:.08; }
+
+  /* ---- compass emblem ---- */
+  /* sizes/positions below are MEASURED from frame0 of the original art:
+     emblem dia 31.2%h @ cy 26.9% · DIGIMON caps 3.0%h @ 49.2% · TERMINUS caps 6.1%h @ 57.0%
+     tagline @ 66.8% */
+  .emblem { position:absolute; left:50%; top:26.9%; width:38vh; height:38vh;
+    translate:-50% -50%; filter:drop-shadow(0 0 14px #2FB6D822); }
+  .emblem .rot  { transform-origin:100px 100px; animation:spin 64s linear infinite; }
+  .emblem .rotr { transform-origin:100px 100px; animation:spin 42s linear infinite reverse; }
+  @keyframes spin { to { transform:rotate(360deg) } }
+  .emblem .glow { animation:breathe 4s ease-in-out infinite; transform-origin:100px 100px; }
+  @keyframes breathe { 0%,100%{opacity:.85} 50%{opacity:1} }
+
+  /* ---- typography stack ---- */
+  .digimon { position:absolute; left:50%; top:49.2%; translate:-50% -50%;
+    font-size:3.4vh; font-weight:600; letter-spacing:1.2em; padding-left:1.2em; white-space:nowrap;
+    color:#C9D4DC; animation:digishift 9s ease-in-out infinite; }
+  @keyframes digishift { 0%,100%{color:#C9D4DC} 50%{color:#9fc4d4} }
+
+  .terminus { position:absolute; left:50%; top:57%; translate:-50% -50%;
+    font-family:Georgia,"Times New Roman",serif; font-weight:700; white-space:nowrap;
+    font-size:8.6vh; letter-spacing:.16em; padding-left:.16em;
+    background:
+      linear-gradient(100deg, #FFFFFF00 42%, #FFF7DDCC 50%, #FFFFFF00 58%) 0 0/280% 100%,
+      linear-gradient(180deg, #FBEFC0 0%, #E8C878 40%, #8F6B24 54%, #EBD088 76%, #C7A452 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shine 7s linear infinite;
+    filter:drop-shadow(0 1px 0 #3a2b08) drop-shadow(0 0 16px #D0B06022); }
+  @keyframes shine { from{background-position:280% 0, 0 0} to{background-position:0 0, 0 0} }
+
+  .divider { position:absolute; left:50%; top:64.9%; width:40vh; height:1px; translate:-50% 0;
+    background:linear-gradient(90deg, transparent, #2FB6D877 20%, #2FB6D877 80%, transparent); }
+  .divider::after { content:""; position:absolute; top:-1px; width:18%; height:3px; border-radius:2px;
+    background:linear-gradient(90deg, transparent, #F7E7A899, transparent);
+    animation:flow 5s ease-in-out infinite; }
+  @keyframes flow { 0%{left:-18%} 50%{left:100%} 100%{left:-18%} }
+
+  .tagline { position:absolute; left:50%; top:66.8%; translate:-50% -50%;
+    font-size:2vh; letter-spacing:.62em; padding-left:.62em; white-space:nowrap;
+    color:#5f8695; }
+
+  /* ---- interactive controls (drive the native handlers via postMessage) ---- */
+  .playbtn { position:absolute; left:50%; top:82%; translate:-50% -50%;
+    width:34vh; height:8.4vh; cursor:pointer; overflow:hidden;
+    background:linear-gradient(180deg, rgba(6,10,18,.92), rgba(3,6,12,.92));
+    border:1px solid #B99B52; box-shadow:inset 0 0 14px rgba(208,176,96,.08);
+    transition:box-shadow .25s, border-color .25s; }
+  .playbtn::before, .playbtn::after { content:""; position:absolute; top:50%; width:5vh; height:1px;
+    background:linear-gradient(90deg, transparent, #B99B5288); }
+  .playbtn::before { right:100%; margin-right:1.4vh; }
+  .playbtn::after  { left:100%;  margin-left:1.4vh; transform:scaleX(-1); }
+  .playbtn span { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:3vh; font-weight:700; letter-spacing:.55em; padding-left:.55em;
+    background:linear-gradient(180deg, #FBEFC0, #E3C56E 55%, #C7A452);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .playbtn i { position:absolute; top:0; bottom:0; width:34%; left:-40%; transform:skewX(-18deg);
+    background:linear-gradient(90deg, transparent, rgba(255,247,221,.14), transparent); }
+  .playbtn:hover { border-color:#F7E7A8; box-shadow:inset 0 0 18px rgba(208,176,96,.16), 0 0 22px rgba(208,176,96,.25); }
+  .playbtn:hover i { animation:btnsweep 1.1s ease infinite; }
+  @keyframes btnsweep { from{left:-40%} to{left:110%} }
+  .playbtn:active { box-shadow:inset 0 0 26px rgba(208,176,96,.3); }
+
+  .sqbtn { position:absolute; top:14px; width:32px; height:32px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:15px;
+    background:rgba(2,6,14,.82); border:1px solid #17505F; color:#2FB6D8;
+    transition:border-color .2s, color .2s, box-shadow .2s; }
+  .sqbtn:hover { border-color:#D0B060; color:#F7E7A8; box-shadow:0 0 10px rgba(208,176,96,.3); }
+  .sqbtn.xcls { right:14px; color:#C9D4DC; }
+  .sqbtn.xcls:hover { border-color:#CC2200; color:#FF6644; box-shadow:0 0 10px rgba(204,34,0,.35); }
+  .sqbtn.gear { right:54px; }
+
+  /* ---- DIGI-BLOCKS HUD (replaces the native status bar + progress bar; the
+         launcher parks those on hud:html and feeds real values via messages) ---- */
+  .hud { position:absolute; left:0; right:0; bottom:0; height:34px; display:flex; align-items:center;
+    gap:18px; padding-left:16px; background:linear-gradient(180deg, transparent, rgba(0,2,8,.92) 30%);
+    font:600 11.5px Consolas,monospace; }
+  .hud .seg b { color:#4B8AA5; letter-spacing:1px; margin-right:7px; }
+  .hud .seg span { color:#E8EDF2; text-transform:uppercase; }
+  .hud .seg.gold span { color:#E3C56E; }
+  .hud-cube { display:inline-block; width:7px; height:7px; margin-right:7px; vertical-align:-1px;
+    background:#2FB6D8; animation:cubespin 3s ease-in-out infinite; }
+  @keyframes cubespin { 0%,100%{transform:rotate(0);opacity:.7} 50%{transform:rotate(90deg);opacity:1} }
+  .hud-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:7px; vertical-align:-1px;
+    background:#4B8AA5; animation:dotpulse 2s ease-in-out infinite; }
+  .hud-dot.on  { background:#39d98a; box-shadow:0 0 6px #39d98a99; }
+  .hud-dot.off { background:#FF6644; box-shadow:0 0 6px #CC220099; animation:none; }
+  @keyframes dotpulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+  .hud-prog { position:absolute; left:14px; right:14px; bottom:35px; height:8px; display:flex; gap:2px;
+    opacity:0; transition:opacity .3s; }
+  .hud-prog i { flex:1; background:#0d2a34; }
+  .hud-prog i.on { background:#E3C56E; box-shadow:0 0 4px #D0B06055; }
+  .hud-prog i.on.teal { background:#2FB6D8; box-shadow:0 0 4px #2FB6D855; }
+  .hud-pct { position:absolute; right:36px; bottom:49px; font:700 12px Consolas,monospace; color:#F7E7A8;
+    opacity:0; transition:opacity .3s; }
+  .hud-fx { position:absolute; inset:0; pointer-events:none; }
+
+  /* brand (replaces the legacy native "LAUNCHER" gif, which the launcher parks) */
+  /* below the frame line (y17) + corner bracket (ends y28), above native NODE_ID (y80) */
+  .brand { position:absolute; left:18px; top:30px; line-height:1; pointer-events:none; }
+  .brand .t { font-family:Georgia,"Times New Roman",serif; font-weight:700; font-size:24px;
+    letter-spacing:.18em;
+    background:linear-gradient(180deg, #FBEFC0, #E3C56E 55%, #C7A452);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .brand .l { margin-top:6px; font-size:12px; font-weight:600; letter-spacing:.56em; color:#2FB6D8; }
 </style>
 </head>
 <body>
-  <img class="bg" src="background.gif" alt="">
-  <div class="scan"></div>
-  <div class="glow"></div>
+  <div class="layer backdrop"></div>
+  <div class="layer" id="stars"></div>
+  <div class="layer" id="rain"></div>
+
+  <svg class="layer decor" viewBox="0 0 772 429" preserveAspectRatio="xMidYMid slice">
+    <g fill="none" stroke="#2FB6D8" stroke-width="1">
+      <path d="M120 300 l14 8 v16 l-14 8 -14 -8 v-16 z"/>
+      <path d="M640 120 l11 6.5 v13 l-11 6.5 -11 -6.5 v-13 z"/>
+      <path d="M690 330 l9 5 v10 l-9 5 -9 -5 v-10 z"/>
+      <path d="M90 150 l8 4.5 v9 l-8 4.5 -8 -4.5 v-9 z"/>
+    </g>
+  </svg>
+
+  <div class="aura plx"></div>
+  <!-- compass emblem: bezel ticks + rotating pointers + dashed ring + gold hex + T -->
+  <svg class="emblem plx" viewBox="0 0 200 200">
+    <g class="glow">
+      <!-- outer bezel -->
+      <circle cx="100" cy="100" r="79" fill="none" stroke="#2FB6D8" stroke-width="1" opacity=".9"/>
+      <circle cx="100" cy="100" r="74" fill="none" stroke="#2FB6D8" stroke-width="5"
+              stroke-dasharray="1 6.66" opacity=".55"/>
+      <!-- rotating cardinal pointers -->
+      <g class="rot" fill="#2FB6D8">
+        <path d="M100 12 l5 9 h-10 z"/>
+        <path d="M100 188 l5 -9 h-10 z"/>
+        <path d="M12 100 l9 -5 v10 z"/>
+        <path d="M188 100 l-9 -5 v10 z"/>
+      </g>
+      <!-- counter-rotating dashed ring -->
+      <circle class="rotr" cx="100" cy="100" r="56" fill="none" stroke="#2FB6D8"
+              stroke-width="1.2" stroke-dasharray="5 7" opacity=".8"/>
+      <!-- gold hexagon + vertex dots -->
+      <g stroke="#D0B060" fill="none">
+        <path d="M100 56 l38 22 v44 l-38 22 -38 -22 v-44 z" stroke-width="1.6"/>
+      </g>
+      <g fill="#E9CF82">
+        <circle cx="100" cy="56" r="2.4"/><circle cx="138" cy="78" r="2.4"/>
+        <circle cx="138" cy="122" r="2.4"/><circle cx="100" cy="144" r="2.4"/>
+        <circle cx="62" cy="122" r="2.4"/><circle cx="62" cy="78" r="2.4"/>
+      </g>
+      <!-- core disc + T monogram -->
+      <circle cx="100" cy="100" r="27" fill="#050c12" stroke="#17505F" stroke-width="1"/>
+      <g fill="#E3C56E">
+        <rect x="82" y="86" width="36" height="7" rx="1"/>
+        <rect x="96" y="86" width="8" height="26" rx="1"/>
+        <circle cx="100" cy="121" r="2.6"/>
+      </g>
+      <path d="M82 86 h36 v3 h-36 z M96 86 h8 v3 h-8 z" fill="#F7E7A8" opacity=".8"/>
+    </g>
+  </svg>
+
+  <div class="digimon plx2">DIGIMON</div>
+  <div class="terminus plx2">TERMINUS</div>
+  <div class="divider plx2"></div>
+  <div class="tagline plx2">BEYOND THE EDGE OF THE DIGITAL WORLD</div>
+
+  <div class="playbtn htmlctl" id="btnPlay"><i></i><span>PLAY</span></div>
+  <div class="sqbtn gear htmlctl" id="btnGear">&#9881;</div>
+  <div class="sqbtn xcls htmlctl" id="btnClose">&#10005;</div>
+  <div class="brand htmlctl"><div class="t">TERMINUS</div><div class="l">LAUNCHER</div></div>
+
+  <div class="hud-prog htmlctl" id="hudBlocks"></div>
+  <div class="hud-pct htmlctl" id="hudPct">0%</div>
+  <canvas class="hud-fx htmlctl" id="hudFx"></canvas>
+  <div class="hud htmlctl">
+    <span class="seg"><span class="hud-cube"></span><b>STATUS</b><span id="hudStatus">READY</span></span>
+    <span class="seg"><span class="hud-dot" id="hudDot"></span><b>SERVER</b><span id="hudServer">CHECKING</span></span>
+    <span class="seg gold"><b>BUILD</b><span id="hudBuild">&#8212;</span></span>
+  </div>
+
+  <div class="layer vig"></div>
+  <div class="layer frame">
+    <i class="top"></i><i class="bottom"></i>
+    <b class="tl"></b><b class="tr"></b>
+  </div>
+  <div class="pix l"></div><div class="pix r"></div>
+
   <script>
+    // seeded random: every player sees the same sky
+    var seed = 1337, rnd = function () { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+
+    // bottom-corner pixel-dissolve clusters (3x3, scattered vectors, offset phases)
+    document.querySelectorAll('.pix').forEach(function (host, hi) {
+      for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) {
+        var i = document.createElement('i');
+        i.style.left = (c * 6) + 'px'; i.style.top = (r * 6) + 'px';
+        if ((r + c) % 4 === 2) i.className = 't';
+        i.style.setProperty('--d', (2.6 + ((r * 3 + c) % 5) * .5) + 's');
+        i.style.setProperty('--dl', (-(r * 3 + c) * .35 - hi * 1.1) + 's');
+        i.style.setProperty('--sx', ((c - 1) * 5 + (hi ? 4 : -4)) + 'px');
+        i.style.setProperty('--sy', (-(4 + r * 3)) + 'px');
+        host.appendChild(i);
+      }
+    });
+
+    (function () {
+      var stars = document.getElementById('stars'), i, d;
+      var starCols = ['#C9D4DC', '#C9D4DC', '#2FB6D8', '#E9CF82'];
+      for (i = 0; i < 90; i++) {
+        d = document.createElement('div'); d.className = 'star';
+        d.style.left = (rnd() * 100).toFixed(2) + '%';
+        d.style.top  = (5 + rnd() * 85).toFixed(2) + '%';
+        d.style.background = starCols[(rnd() * starCols.length) | 0];
+        if (rnd() < .12) { d.style.width = d.style.height = '3px'; }
+        d.style.setProperty('--d', (2.5 + rnd() * 5).toFixed(2) + 's');
+        d.style.animationDelay = (-rnd() * 6).toFixed(2) + 's';
+        stars.appendChild(d);
+      }
+      // data-rain: denser on the outer thirds (keeps the center art readable)
+      var rain = document.getElementById('rain');
+      for (i = 0; i < 34; i++) {
+        d = document.createElement('div'); d.className = 'streak';
+        var x = rnd();                       // bias toward edges like the art
+        x = x < .5 ? x * x * 2 * 0.36 : 1 - (1 - x) * (1 - x) * 2 * 0.42;
+        d.style.left = (x * 100).toFixed(2) + '%';
+        d.style.top  = (30 + rnd() * 62).toFixed(2) + '%';
+        d.style.height = (5 + rnd() * 11).toFixed(1) + 'vh';
+        d.style.setProperty('--c', rnd() < .72 ? '#2FB6D8' : '#E9CF82');
+        d.style.setProperty('--o', (.25 + rnd() * .45).toFixed(2));
+        d.style.setProperty('--d', (7 + rnd() * 9).toFixed(2) + 's');
+        d.style.setProperty('--dl', (-rnd() * 16).toFixed(2) + 's');
+        rain.appendChild(d);
+      }
+    })();
+
     // forward left-mouse drag to the native window (HtmlPanel WebMessageReceived)
     addEventListener('mousedown', function (e) {
       if (e.button === 0 && window.chrome && window.chrome.webview)
         window.chrome.webview.postMessage('drag');
     });
+
+    // interactive controls -> native handlers (updater/injection/guards all reused)
+    function wire(id, msg) {
+      var el = document.getElementById(id);
+      el.addEventListener('mousedown', function (e) { e.stopPropagation(); }); // don't start a window drag
+      el.addEventListener('click', function () {
+        if (window.chrome && window.chrome.webview) window.chrome.webview.postMessage(msg);
+      });
+    }
+    wire('btnPlay', 'play'); wire('btnGear', 'settings'); wire('btnClose', 'close');
+
+    // ---- DIGI-BLOCKS HUD engine ----
+    var hud = (function () {
+      var N = 72, blocks = document.getElementById('hudBlocks');
+      for (var i = 0; i < N; i++) blocks.appendChild(document.createElement('i'));
+      var els = blocks.children;
+      var pctEl = document.getElementById('hudPct');
+      var fx = document.getElementById('hudFx');
+      var ctx = fx.getContext('2d');
+      var statusEl = document.getElementById('hudStatus');
+      var GLYPHS = '▓▒░<>/#01';
+      var target = 'READY', decodeStart = 0, progress = -1, parts = [];
+
+      function resize() { fx.width = fx.clientWidth; fx.height = fx.clientHeight; }
+      resize(); addEventListener('resize', resize);
+
+      function setStatus(s) {
+        s = (s || '').toUpperCase();
+        if (s === target) return;
+        target = s; decodeStart = Date.now();
+      }
+      function frame() {
+        // decode text
+        var el = Date.now() - decodeStart, dur = 420;
+        if (el >= dur) statusEl.textContent = target;
+        else {
+          var n = Math.floor(target.length * el / dur), out = target.slice(0, n);
+          for (var i = n; i < target.length; i++)
+            out += target[i] === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+          statusEl.textContent = out;
+        }
+        // blocks + particles
+        var active = progress >= 0;
+        blocks.style.opacity = active ? 1 : 0;
+        pctEl.style.opacity = active ? 1 : 0;
+        if (active) {
+          pctEl.textContent = Math.round(progress) + '%';
+          var lit = progress / 100 * N;
+          for (var i = 0; i < N; i++) {
+            var cls = 'on' + (i % 9 === 4 ? ' teal' : '');
+            if (i < lit - 3) els[i].className = cls;
+            else if (i < lit + 2 && progress < 100) els[i].className = Math.random() < .55 ? cls : '';
+            else if (i < lit) els[i].className = cls;
+            else els[i].className = '';
+          }
+          if (progress < 100 && Math.random() < .8) {
+            var r = blocks.getBoundingClientRect();
+            parts.push({ x: r.left + r.width * progress / 100, y: r.top + 4,
+                         vx: (Math.random() - .3) * .7, vy: -(.4 + Math.random() * 1.1),
+                         life: 1, s: 2 + (Math.random() * 2 | 0),
+                         c: Math.random() < .75 ? '#E3C56E' : '#2FB6D8' });
+          }
+        }
+        ctx.clearRect(0, 0, fx.width, fx.height);
+        for (var i = parts.length - 1; i >= 0; i--) {
+          var p = parts[i];
+          p.x += p.vx; p.y += p.vy; p.life -= .016;
+          if (p.life <= 0) { parts.splice(i, 1); continue; }
+          ctx.globalAlpha = p.life * .9;
+          ctx.fillStyle = p.c;
+          ctx.fillRect(p.x, p.y, p.s, p.s);
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(frame);
+      }
+      frame();
+
+      return {
+        update: function (d) {
+          setStatus(d.status);
+          progress = typeof d.progress === 'number' ? d.progress : -1;
+          var dot = document.getElementById('hudDot'), srv = document.getElementById('hudServer');
+          if (d.server === true)  { dot.className = 'hud-dot on';  srv.textContent = 'ONLINE'; }
+          else if (d.server === false) { dot.className = 'hud-dot off'; srv.textContent = 'OFFLINE'; }
+          else { dot.className = 'hud-dot'; srv.textContent = 'CHECKING'; }
+          if (d.build) document.getElementById('hudBuild').textContent = d.build;
+        }
+      };
+    })();
+
+    // tell the launcher this page has its own controls + HUD (it parks the native
+    // ones and starts streaming real status/progress values)
+    if (window.chrome && window.chrome.webview) {
+      window.chrome.webview.addEventListener('message', function (e) {
+        var d = e.data;
+        if (d && d.t === 'hud') {
+          document.body.classList.add('htmlui');   // launcher speaks the bridge: reveal page UI
+          hud.update(d);
+        }
+      });
+      window.chrome.webview.postMessage('controls:html');
+      window.chrome.webview.postMessage('hud:html');
+    }
+
+    // micro-parallax: emblem drifts up to ~5px toward the cursor, text ~2px
+    (function () {
+      var root = document.documentElement, t = null;
+      addEventListener('mousemove', function (e) {
+        if (t) return;
+        t = setTimeout(function () { t = null; }, 40);   // ~25 fps is plenty
+        root.style.setProperty('--px', (e.clientX / innerWidth * 2 - 1).toFixed(3));
+        root.style.setProperty('--py', (e.clientY / innerHeight * 2 - 1).toFixed(3));
+      });
+      addEventListener('mouseleave', function () {
+        root.style.setProperty('--px', 0); root.style.setProperty('--py', 0);
+      });
+    })();
+
+    // ---- dev preview (browser only): 1158x644 stage + mock native controls ----
+    if (!(window.chrome && window.chrome.webview)) (function () {
+      document.body.classList.add('htmlui');   // browser preview: show everything
+      var css = 'html,body{background:#333!important;height:100%!important;overflow:hidden}' +
+        '#stage{position:fixed;left:50%;top:50%;width:1158px;height:644px;margin:-322px 0 0 -579px;' +
+        'overflow:hidden;outline:1px solid #555;box-shadow:0 12px 48px #000C}' +
+        '.mock{position:absolute;z-index:99;font-family:Segoe UI,sans-serif;box-sizing:border-box}';
+      var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+      var stage = document.createElement('div'); stage.id = 'stage';
+      while (document.body.firstChild) stage.appendChild(document.body.firstChild);
+      document.body.appendChild(stage);
+      function mock(html, s) { var d = document.createElement('div'); d.className = 'mock';
+        d.innerHTML = html; d.style.cssText += s; stage.appendChild(d); }
+      // NODE_ID/STATUS stay native in the launcher; only they are mocked here.
+      // Buttons and the HUD are REAL page elements now.
+      mock('NODE_ID: TRM-001<br>STATUS: ONLINE',
+           'left:16px;top:80px;color:#D0B060;font:600 12px Consolas,monospace;line-height:17px');
+
+      // simulate the launcher's hud stream: idle -> download -> complete, on loop
+      var t0 = Date.now(), files = ['GDMO.exe', 'Pack03.pf', 'index.html'];
+      (function demo() {
+        var t = ((Date.now() - t0) / 1000) % 11;
+        var d;
+        if (t < 3) d = { status: 'Ready', server: true, build: '0.6.8', progress: -1 };
+        else if (t < 8.5) {
+          var pct = Math.min(100, (t - 3) / 5.5 * 100);
+          var f = files[Math.floor(pct / 34) % files.length];
+          d = { status: '[2/6] ' + f + ' · ' + (pct * .969).toFixed(1) + '/96.9 MB · 8.4 MB/s',
+                server: true, build: '0.6.8', progress: pct };
+        }
+        else d = { status: 'Update complete', server: true, build: '0.6.8', progress: -1 };
+        hud.update(d);
+        setTimeout(demo, 120);
+      })();
+    })();
   </script>
 </body>
 </html>
