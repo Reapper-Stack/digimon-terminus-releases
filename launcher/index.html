@@ -174,6 +174,76 @@
     opacity:0; transition:opacity .3s; }
   .hud-fx { position:absolute; inset:0; pointer-events:none; }
 
+  /* ---- GRAPHICS SETTINGS panel (fed by the launcher via settings-open/save) ---- */
+  .sdim { position:absolute; inset:0; z-index:50; display:none;
+    background:rgba(0,1,5,.72); backdrop-filter:blur(2px); }
+  .sdim.show { display:block; }
+  .spanel { position:absolute; left:50%; top:50%; translate:-50% -50%; width:400px;
+    background:linear-gradient(165deg, #070b14, #030509);
+    border:1px solid #B99B52; box-shadow:0 0 40px #00000088, inset 0 0 30px rgba(208,176,96,.05);
+    animation:panelin .35s cubic-bezier(.2,.9,.3,1.2); }
+  @keyframes panelin { from{ opacity:0; translate:-50% -46%; } to{ opacity:1; translate:-50% -50%; } }
+  .s-head { display:flex; align-items:center; padding:16px 18px 12px; }
+  .s-title { font-family:Georgia,serif; font-weight:700; font-size:19px; letter-spacing:.16em;
+    background:linear-gradient(180deg, #FBEFC0, #E3C56E 55%, #C7A452);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .s-x { margin-left:auto; width:26px; height:26px; display:flex; align-items:center; justify-content:center;
+    border:1px solid #17505F; color:#C9D4DC; cursor:pointer; font-size:12px;
+    transition:border-color .2s, color .2s; }
+  .s-x:hover { border-color:#CC2200; color:#FF6644; }
+  .s-rule { height:1px; margin:0 18px 6px; background:linear-gradient(90deg, #17505F, transparent 85%); }
+  .s-body { padding:10px 18px 4px; }
+  .s-err { padding:26px 10px 30px; text-align:center; font:600 12px Consolas,monospace;
+    color:#C9D4DC; line-height:1.7; letter-spacing:.5px; }
+  .s-row { display:flex; align-items:center; height:44px; }
+  .s-row b { width:150px; font:600 11px Consolas,monospace; letter-spacing:1px; color:#4B8AA5; }
+  .sel { position:relative; flex:1; }
+  .sel .cur { display:flex; align-items:center; height:30px; padding:0 12px; cursor:pointer;
+    background:#050a12; border:1px solid #123844; font:600 12px Consolas,monospace; color:#E8EDF2;
+    transition:border-color .2s; }
+  .sel .cur::after { content:"\25BE"; margin-left:auto; color:#D0B060; font-size:11px; }
+  .sel:hover .cur { border-color:#B99B52; }
+  .sel .list { position:absolute; left:0; right:0; top:31px; z-index:5; display:none;
+    background:#060b14; border:1px solid #B99B52; max-height:150px; overflow-y:auto; }
+  .sel.open .list { display:block; }
+  .sel .list div { padding:7px 12px; font:600 12px Consolas,monospace; color:#C9D4DC; cursor:pointer; }
+  .sel .list div:hover { background:#10202c; color:#F7E7A8; }
+  .sel .list div.is { color:#E3C56E; }
+  .sel .list::-webkit-scrollbar { width:6px; } .sel .list::-webkit-scrollbar-thumb { background:#17505F; }
+  .tog { position:relative; width:70px; height:24px; cursor:pointer; overflow:hidden;
+    background:#050a12; border:1px solid #123844; transition:border-color .25s, box-shadow .25s; }
+  .tog .fill { position:absolute; inset:0; transform:scaleX(0); transform-origin:left;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.25) 0 1px, transparent 1px 6px),
+      linear-gradient(180deg, #E3C56E, #C7A452);
+    transition:transform .28s cubic-bezier(.3,.8,.4,1.1); }
+  .tog .txt { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:5px;
+    z-index:2; font:700 10px Consolas,monospace; letter-spacing:2px; color:#3a4650; transition:color .2s; }
+  .tog.on { border-color:#B99B52; box-shadow:0 0 10px #D0B06033; }
+  .tog.on .fill { transform:scaleX(1); }
+  .tog.on .txt { color:#1a1205; }
+  .s-foot { padding:12px 18px 18px; }
+  .s-save { position:relative; height:38px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; overflow:hidden; background:linear-gradient(180deg, rgba(6,10,18,.92), rgba(3,6,12,.92));
+    border:1px solid #B99B52; transition:box-shadow .25s, border-color .25s; }
+  .s-save span { font:700 13px "Segoe UI"; letter-spacing:.5em; padding-left:.5em;
+    background:linear-gradient(180deg, #FBEFC0, #E3C56E 55%, #C7A452);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .s-save i { position:absolute; top:0; bottom:0; width:34%; left:-40%; transform:skewX(-18deg);
+    background:linear-gradient(90deg, transparent, rgba(255,247,221,.14), transparent); }
+  .s-save:hover { border-color:#F7E7A8; box-shadow:0 0 18px rgba(208,176,96,.25); }
+  .s-save:hover i { animation:btnsweep 1.1s ease infinite; }
+  .s-save.done { border-color:#39d98a; }
+  .s-save.done span { background:linear-gradient(180deg, #b8f5d5, #39d98a); -webkit-background-clip:text; background-clip:text; }
+  .s-save.fail { border-color:#CC2200; }
+  .s-save.fail span { background:linear-gradient(180deg, #ffb3a0, #FF6644); -webkit-background-clip:text; background-clip:text; }
+  .s-msg { min-height:15px; padding:8px 18px 0; text-align:center;
+    font:600 10px Consolas,monospace; letter-spacing:1px; color:#c0503c; }
+  .sppix { position:absolute; width:13px; height:13px; pointer-events:none; }
+  .sppix.tl { top:-7px; left:-7px; } .sppix.br { bottom:-7px; right:-7px; }
+  .sppix i { position:absolute; width:3px; height:3px; background:#E3C56E;
+    animation:pixfade var(--d) ease-in-out infinite; animation-delay:var(--dl); }
+
   /* brand (replaces the legacy native "LAUNCHER" gif, which the launcher parks) */
   /* below the frame line (y17) + corner bracket (ends y28), above native NODE_ID (y80) */
   .brand { position:absolute; left:18px; top:30px; line-height:1; pointer-events:none; }
@@ -255,6 +325,20 @@
     <span class="seg gold"><b>BUILD</b><span id="hudBuild">&#8212;</span></span>
   </div>
 
+  <div class="sdim" id="sdim">
+    <div class="spanel" onmousedown="event.stopPropagation()">
+      <div class="sppix tl"></div><div class="sppix br"></div>
+      <div class="s-head">
+        <div class="s-title">GRAPHICS SETTINGS</div>
+        <div class="s-x" id="sClose">&#10005;</div>
+      </div>
+      <div class="s-rule"></div>
+      <div class="s-body" id="sBody"></div>
+      <div class="s-msg" id="sMsg"></div>
+      <div class="s-foot"><div class="s-save" id="sSave"><i></i><span>SAVE</span></div></div>
+    </div>
+  </div>
+
   <div class="layer vig"></div>
   <div class="layer frame">
     <i class="top"></i><i class="bottom"></i>
@@ -324,7 +408,169 @@
         if (window.chrome && window.chrome.webview) window.chrome.webview.postMessage(msg);
       });
     }
-    wire('btnPlay', 'play'); wire('btnGear', 'settings'); wire('btnClose', 'close');
+    wire('btnPlay', 'play'); wire('btnClose', 'close');
+
+    // ---- GRAPHICS SETTINGS panel ----
+    var settings = (function () {
+      var TEX = [['Maximum',2],['High',4],['Medium',5],['Medium-Low',3],['Low',1]];
+      var AA  = [['Off',0],['2x',65536],['4x',196608],['6x',327680],['8x',458752]];
+      var dim = document.getElementById('sdim'), body = document.getElementById('sBody');
+      var msg = document.getElementById('sMsg'), save = document.getElementById('sSave');
+      var saveSp = save.querySelector('span');
+      var cur = null, busy = false, fallbackTimer = null;
+
+      // panel corner pixel clusters
+      document.querySelectorAll('.sppix').forEach(function (host, hi) {
+        for (var r = 0; r < 2; r++) for (var c = 0; c < 2; c++) {
+          var i = document.createElement('i');
+          i.style.left = (c * 6) + 'px'; i.style.top = (r * 6) + 'px';
+          i.style.setProperty('--d', (2.4 + ((r * 2 + c) % 3) * .6) + 's');
+          i.style.setProperty('--dl', (-(r * 2 + c) * .5 - hi) + 's');
+          i.style.setProperty('--sx', ((c - .5) * 8) + 'px');
+          i.style.setProperty('--sy', (-(3 + r * 4)) + 'px');
+          host.appendChild(i);
+        }
+      });
+
+      function close() { dim.classList.remove('show'); }
+      document.getElementById('sClose').onclick = close;
+      dim.addEventListener('mousedown', function (e) { e.stopPropagation(); }); // never start a window drag
+      dim.addEventListener('click', function (e) { if (e.target === dim) close(); });
+
+      function mkSel(label, options, value) {
+        var row = document.createElement('div'); row.className = 's-row';
+        row.innerHTML = '<b>' + label + '</b>';
+        var sel = document.createElement('div'); sel.className = 'sel';
+        var curEl = document.createElement('div'); curEl.className = 'cur';
+        var list = document.createElement('div'); list.className = 'list';
+        options.forEach(function (o) {
+          var d = document.createElement('div'); d.textContent = o[0];
+          if (o[1] === value) { d.className = 'is'; curEl.textContent = o[0]; sel.dataset.v = o[1]; }
+          d.onclick = function (e) {
+            curEl.textContent = o[0]; sel.dataset.v = o[1];
+            list.querySelectorAll('div').forEach(function (x) { x.className = x === d ? 'is' : ''; });
+            sel.classList.remove('open'); e.stopPropagation();
+          };
+          list.appendChild(d);
+        });
+        if (!sel.dataset.v) { curEl.textContent = options[0][0]; sel.dataset.v = options[0][1]; }
+        curEl.onclick = function (e) {
+          document.querySelectorAll('.sel.open').forEach(function (o) { if (o !== sel) o.classList.remove('open'); });
+          sel.classList.toggle('open'); e.stopPropagation();
+        };
+        sel.appendChild(curEl); sel.appendChild(list); row.appendChild(sel);
+        return row;
+      }
+      function mkTog(label, on) {
+        var row = document.createElement('div'); row.className = 's-row';
+        row.innerHTML = '<b>' + label + '</b>';
+        var t = document.createElement('div'); t.className = 'tog' + (on ? ' on' : '');
+        t.innerHTML = '<div class="fill"></div><div class="txt">' + (on ? '&#10003;&nbsp;ON' : 'OFF') + '</div>';
+        t.onclick = function () {
+          t.classList.toggle('on');
+          var isOn = t.classList.contains('on');
+          t.querySelector('.txt').innerHTML = isOn ? '&#10003;&nbsp;ON' : 'OFF';
+          for (var k = 0; k < 5; k++) {
+            var p = document.createElement('span');
+            p.style.cssText = 'position:absolute;width:3px;height:3px;background:#E3C56E;opacity:1;z-index:9;' +
+              'left:' + (isOn ? 66 : 4) + 'px;top:10px;transition:all .5s ease-out;';
+            t.appendChild(p);
+            (function (p) { requestAnimationFrame(function () {
+              p.style.transform = 'translate(' + ((Math.random() - .3) * 28) + 'px,' + (-(8 + Math.random() * 16)) + 'px)';
+              p.style.opacity = 0;
+              setTimeout(function () { p.remove(); }, 520);
+            }); })(p);
+          }
+        };
+        row.appendChild(t);
+        return row;
+      }
+
+      function show(data) {
+        if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+        body.innerHTML = ''; msg.textContent = '';
+        save.style.display = data.error ? 'none' : 'flex';
+        saveSp.textContent = 'SAVE'; save.className = 's-save'; busy = false;
+        if (data.error) {
+          var e = document.createElement('div'); e.className = 's-err'; e.textContent = data.error;
+          body.appendChild(e); cur = null;
+        } else {
+          var v = data.values;
+          var modeOpts = data.modes.map(function (m) { return [m[0] + ' x ' + m[1], m[0] + 'x' + m[1]]; });
+          cur = { rows: {} };
+          cur.rows.res = mkSel('RESOLUTION', modeOpts, v.resW + 'x' + v.resH);
+          cur.rows.tex = mkSel('TEXTURE DETAIL', TEX, v.tex);
+          cur.rows.aa  = mkSel('ANTIALIASING', AA, v.aa);
+          cur.rows.fs  = mkTog('FULLSCREEN', v.fullscreen);
+          cur.rows.vs  = mkTog('VERTICAL SYNC', v.vsync);
+          cur.rows.sh  = mkTog('SHADOWS', v.shadow);
+          for (var k in cur.rows) body.appendChild(cur.rows[k]);
+        }
+        dim.classList.add('show');
+      }
+
+      save.onclick = function () {
+        if (busy || !cur) return; busy = true;
+        var res = String(cur.rows.res.querySelector('.sel').dataset.v).split('x');
+        var payload = {
+          resW: parseInt(res[0], 10), resH: parseInt(res[1], 10),
+          tex: parseInt(cur.rows.tex.querySelector('.sel').dataset.v, 10),
+          aa: parseInt(cur.rows.aa.querySelector('.sel').dataset.v, 10),
+          fullscreen: cur.rows.fs.querySelector('.tog').classList.contains('on'),
+          vsync: cur.rows.vs.querySelector('.tog').classList.contains('on'),
+          shadow: cur.rows.sh.querySelector('.tog').classList.contains('on')
+        };
+        var G = '▓▒░<>/#01', steps = 0;
+        var iv = setInterval(function () {
+          steps++;
+          if (steps >= 8) { clearInterval(iv); return; }
+          var out = '';
+          for (var i = 0; i < 6; i++) out += Math.random() < steps / 8 ? 'SAVING'[i] : G[(Math.random() * G.length) | 0];
+          saveSp.textContent = out;
+        }, 60);
+        if (window.chrome && window.chrome.webview)
+          window.chrome.webview.postMessage('settings-save ' + JSON.stringify(payload));
+        else  // browser preview: fake success
+          setTimeout(function () { settings.result({ ok: true, msg: '' }); }, 700);
+      };
+
+      return {
+        open: function () {
+          if (window.chrome && window.chrome.webview) {
+            window.chrome.webview.postMessage('settings-open');
+            // old launcher (v0.6.8) doesn't answer: fall back to the native dialog
+            fallbackTimer = setTimeout(function () {
+              fallbackTimer = null;
+              window.chrome.webview.postMessage('settings');
+            }, 500);
+          } else {
+            // browser preview: representative fake data
+            show({ error: null,
+              values: { resW: 1920, resH: 1080, tex: 2, aa: 458752, fullscreen: false, vsync: true, shadow: true },
+              modes: [[1024,768],[1280,720],[1280,1024],[1366,768],[1600,900],[1920,1080],[2560,1440]] });
+          }
+        },
+        show: show,
+        result: function (d) {
+          busy = false;
+          if (d.ok) {
+            saveSp.innerHTML = '&#10003;&nbsp;SAVED'; save.classList.add('done');
+            setTimeout(function () { close(); }, 900);
+          } else {
+            saveSp.textContent = 'SAVE'; save.classList.add('fail');
+            msg.textContent = d.msg || 'Save failed.';
+            setTimeout(function () { save.classList.remove('fail'); }, 1200);
+          }
+        }
+      };
+    })();
+
+    var gear = document.getElementById('btnGear');
+    gear.addEventListener('mousedown', function (e) { e.stopPropagation(); });
+    gear.addEventListener('click', function () { settings.open(); });
+    addEventListener('click', function () {
+      document.querySelectorAll('.sel.open').forEach(function (o) { o.classList.remove('open'); });
+    });
 
     // ---- DIGI-BLOCKS HUD engine ----
     var hud = (function () {
@@ -410,10 +656,13 @@
     if (window.chrome && window.chrome.webview) {
       window.chrome.webview.addEventListener('message', function (e) {
         var d = e.data;
-        if (d && d.t === 'hud') {
+        if (!d) return;
+        if (d.t === 'hud') {
           document.body.classList.add('htmlui');   // launcher speaks the bridge: reveal page UI
           hud.update(d);
         }
+        else if (d.t === 'settings') settings.show(d);
+        else if (d.t === 'settings-result') settings.result(d);
       });
       window.chrome.webview.postMessage('controls:html');
       window.chrome.webview.postMessage('hud:html');
