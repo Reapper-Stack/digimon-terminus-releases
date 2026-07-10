@@ -9,9 +9,9 @@
   },
   {
    "path": "DigimonTerminus.Launcher.exe",
-   "sha256": "ed089fde9eb87d2999371aae7dfdaf393f764aa01a21132ed251cc51df7c76c8",
-   "size": 654256,
-   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.8/DigimonTerminus.Launcher.exe"
+   "sha256": "a72de6c76a742a7b1a10d9342a66664676948c821d82dd862d5039eaec18209f",
+   "size": 656304,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.9/DigimonTerminus.Launcher.exe"
   },
   {
    "path": "DigimonTerminus.Launcher.exe.config",
@@ -2547,9 +2547,9 @@
   },
   {
    "path": "art/html/index.html",
-   "sha256": "b6aca7a911eedb4d11bb37461e50fd60848a7412c1a8cd4c4712fa6c0d0abe72",
-   "size": 25371,
-   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.8/index.html"
+   "sha256": "63e65ea614316e3dedce3348919c56d88f4b37a104928ae5d501a615c5adbf76",
+   "size": 39291,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.6.9/index.html"
   },
   {
    "path": "art/html/background.gif",
