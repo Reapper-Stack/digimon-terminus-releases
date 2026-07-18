@@ -8,6 +8,114 @@
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/GDMO.exe"
   },
   {
+   "path": "Data/interface/loading/loading_agumon.png",
+   "sha256": "26f38a28c937191d2dc72b948e622c0ac1ded3fbd104fed3a1411b37776c8888",
+   "size": 30471,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_agumon.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_digits.png",
+   "sha256": "78c6cdacc876454da091793b9f21a915034987d15fc3161bc3d49671ca41dc51",
+   "size": 2513,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_digits.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_label.png",
+   "sha256": "c77e77d634f8db95f06a8679d1214c9193d55e4cca480601f8298ada12bf75e3",
+   "size": 882,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_label.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_log1.png",
+   "sha256": "bdfda674696d938c4b1adc6679a7cd1bb0d5e2a957e9fdb793bae3b678cf6e58",
+   "size": 2281,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_log1.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_log2.png",
+   "sha256": "37c3d79f7e659ec1e1533606b6970ce623a945fcd5e829aa466133a065f91672",
+   "size": 2018,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_log2.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_log3.png",
+   "sha256": "366f50f47fa7e3c070eb8f0fc964164bd8f696c211bad4f0d006962869884c41",
+   "size": 2230,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_log3.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_log4.png",
+   "sha256": "b0f590616f8fb04e5b03e28b6e790b9b173136ff2c88e2a29d5ed036b2906ae3",
+   "size": 2031,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_log4.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_log5.png",
+   "sha256": "741dc761c6193904b11eb9575048940b86e020e5996611892944116159552702",
+   "size": 2218,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_log5.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_log6.png",
+   "sha256": "ec507be8c2de7a123176982933e85abde8251bce70d5cc4d1bc1939f4da0df1c",
+   "size": 1379,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_log6.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_pct.png",
+   "sha256": "061c77d3df678ddcc5975ff79f19d160fde0cc0b5d0ba23de31a3298afd21e69",
+   "size": 565,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_pct.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_portal.png",
+   "sha256": "1df6f782735aced246c6e811fb6333afeafed9b8a33e1c732ea853d4db17ad47",
+   "size": 562683,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_portal.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_terminus.png",
+   "sha256": "e6e73ab815b4f3a091e813751f19bd4d998e3a4cb46a9cf100cc7455587f8ac8",
+   "size": 615445,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_terminus.png"
+  },
+  {
+   "path": "Data/interface/loading/loading_track.png",
+   "sha256": "f5ba1647d41f253ae8b3196f722e2375070709281f58dc13f33ecfcd2b0129be",
+   "size": 246,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/loading_track.png"
+  },
+  {
+   "path": "Data/interface/loading/terminus_bar.png",
+   "sha256": "a284c704ae2f16315889fdf81a26c99c5a4b095ee52ab88898e06aa24bd225db",
+   "size": 4132,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/terminus_bar.png"
+  },
+  {
+   "path": "Data/interface/loading/terminus_bar_fill.png",
+   "sha256": "52555078bafdcd3d9024a6a156429a10531b9396162d48c088d65c502bf15f23",
+   "size": 1043,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/terminus_bar_fill.png"
+  },
+  {
+   "path": "Data/interface/loading/terminus_bar_track.png",
+   "sha256": "21542273e1e38a1daa4370293885f60b5c4dd00a34a7129e5d0db29d63116ef2",
+   "size": 183,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/terminus_bar_track.png"
+  },
+  {
+   "path": "Data/interface/loading/terminus_glow.png",
+   "sha256": "1367f778539b76dbc94e596a07f28f55e18ed7fbe87b61c7cb150f13bd39496f",
+   "size": 478,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/terminus_glow.png"
+  },
+  {
+   "path": "Data/interface/loading/terminus_ring.png",
+   "sha256": "99ba9b7189808e4eb7279ed8c7c46a8fdc0d3005e389b821ed5c62efc254b97e",
+   "size": 1749,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.0/terminus_ring.png"
+  },
+  {
    "path": "DigimonTerminus.Launcher.exe",
    "sha256": "a72de6c76a742a7b1a10d9342a66664676948c821d82dd862d5039eaec18209f",
    "size": 656304,
