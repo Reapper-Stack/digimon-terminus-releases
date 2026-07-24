@@ -8,6 +8,54 @@
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/GDMO.exe"
   },
   {
+   "path": "Data/interface/MainOption/terminus_scan.tga",
+   "sha256": "1184b882c03a772d75ad7c10486d3571498fd1f704feab0a4032a0539134ac19",
+   "size": 20012,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_scan.tga"
+  },
+  {
+   "path": "Data/interface/MainOption/terminus_tab.tga",
+   "sha256": "9afcd8f6b2234a033de8b4363f8626a3db6318c4ec4d642c8a3a3a2b967e77a8",
+   "size": 300,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_tab.tga"
+  },
+  {
+   "path": "Data/interface/MainOption/terminus_tabhl.tga",
+   "sha256": "2eae66dc48660105a674973be6d58fb2b4cb40c818b10034b07875540644dc4d",
+   "size": 8236,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_tabhl.tga"
+  },
+  {
+   "path": "Data/interface/MainOption/terminus_uiglow.tga",
+   "sha256": "ae12ccd898c0f3749b764801a0262c5f089a11f2e9b1e24e9f792294bfb70c4a",
+   "size": 32812,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_uiglow.tga"
+  },
+  {
+   "path": "Data/interface/Control_G/MessageBox/terminus_exitbox.tga",
+   "sha256": "59ad255c32cabd2602f60c4572387769edfa620f5dbf5429ce91509c0266f32f",
+   "size": 272428,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_exitbox.tga"
+  },
+  {
+   "path": "Data/interface/Control_G/MessageBox/terminus_ring.tga",
+   "sha256": "06dc870cb2d3147969f84121f00d75c5e121adc9606cf199fe954db9b3cfd8e4",
+   "size": 1048620,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_ring.tga"
+  },
+  {
+   "path": "Data/interface/Control_G/MessageBox/terminus_btn_cancel.tga",
+   "sha256": "e25f8ecceed4e11a38470f6404c93d4688abf2cbc404ec24767676b5164b0d2e",
+   "size": 65580,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_btn_cancel.tga"
+  },
+  {
+   "path": "Data/interface/Control_G/MessageBox/terminus_btn_exit.tga",
+   "sha256": "e8a75a60107122817472512ba586655296b3ec3b95f97381cb4d9e16869d95da",
+   "size": 65580,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.1/terminus_btn_exit.tga"
+  },
+  {
    "path": "Data/interface/loading/loading_agumon.png",
    "sha256": "26f38a28c937191d2dc72b948e622c0ac1ded3fbd104fed3a1411b37776c8888",
    "size": 30471,
