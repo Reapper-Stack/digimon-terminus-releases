@@ -1,6 +1,23 @@
 # URLs excluded from scripts/check_manifest_urls.py.
 # One URL per line. Only list entries whose breakage is known and accepted.
-
-# DigimonTerminus.Launcher.exe.config: release v0.2.1 was deleted, so this URL
-# 404s. Accepted as-is (2026-07-02) — existing installs already have the file.
-https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.1/DigimonTerminus.Launcher.exe.config
+#
+# EMPTY ON PURPOSE — and it should stay that way if at all possible.
+#
+# The only entry this file ever held was DigimonTerminus.Launcher.exe.config, pointing at
+# deleted tag v0.2.1. It was added on 2026-07-02 with the note "existing installs already
+# have the file", which was true and was exactly why it went unnoticed for three weeks:
+#
+#   Updater.cs:331  a file whose local copy already matches its hash is Skipped, so an
+#                   EXISTING install never requests the URL — the 404 was invisible.
+#   Updater.cs:533  a NEW install has no local copy, downloads, takes a permanent 404
+#                   and increments result.Failed.
+#   Main.cs:753     Failed > 0 shows a red "Update failed" MessageBox before launch.
+#
+# So every first-time player met an error dialog, while the suppression said the breakage
+# was accepted. Resolved 2026-07-26 by re-uploading the byte-identical file (589 B,
+# sha256 48a6992a…) to the live v0.7.3 release and repointing the manifest; the published
+# copy was downloaded back and its hash verified against the manifest before this entry
+# was removed.
+#
+# The lesson worth keeping: "accepted breakage" must state WHO it breaks. A suppression
+# reasoned only about existing installs hid a defect that affected every new one.

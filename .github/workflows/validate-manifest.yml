@@ -26,8 +26,23 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
+      # fetch-depth 2 so the hash step can diff manifest.json against HEAD~1 and
+      # verify only the entries a release actually changed.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       # Ubuntu runners already ship Python 3, so no setup action is needed.
       - name: Validate manifest.json
         run: python3 scripts/validate_manifest.py
+
+      # Until now NOTHING in this repo ever verified a hash: validate_manifest.py only
+      # checks that a sha256 *looks* like one (64 lowercase hex), and check_manifest_urls.py
+      # only compares Content-Length. An asset swapped for different content of the same
+      # size, a truncated upload, or a copy-pasted hash all passed. This step downloads the
+      # entries whose sha256 changed in this commit and checks the real digest.
+      #
+      # --changed, not --all: the manifest is 453 files / ~405 MB, and the set a release
+      # can plausibly get wrong is exactly the set it just modified.
+      - name: Verify changed asset hashes
+        run: python3 scripts/verify_manifest_hashes.py manifest.json --changed
