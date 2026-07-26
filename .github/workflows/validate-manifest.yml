@@ -9,14 +9,25 @@ on:
       - "manifest.json"
       - "schema/**"
       - "scripts/validate_manifest.py"
+      - "scripts/verify_manifest_hashes.py"
       - ".github/workflows/validate-manifest.yml"
   pull_request:
     paths:
       - "manifest.json"
       - "schema/**"
       - "scripts/validate_manifest.py"
+      - "scripts/verify_manifest_hashes.py"
       - ".github/workflows/validate-manifest.yml"
   workflow_dispatch:
+    inputs:
+      hash_scope:
+        description: "Which entries to hash-verify (changed = only what this commit touched)"
+        type: choice
+        options: [changed, all]
+        default: changed
+      hash_limit:
+        description: "With scope=all, stop after this many entries (0 = no limit; the manifest is 453 files / ~405 MB)"
+        default: "5"
 
 # Least privilege: this job only reads the checked-out tree.
 permissions:
@@ -44,5 +55,13 @@ jobs:
       #
       # --changed, not --all: the manifest is 453 files / ~405 MB, and the set a release
       # can plausibly get wrong is exactly the set it just modified.
-      - name: Verify changed asset hashes
-        run: python3 scripts/verify_manifest_hashes.py manifest.json --changed
+      # On push/PR this is always --changed. workflow_dispatch can ask for a bounded
+      # --all sweep, which is also the only way to exercise the download path on a
+      # commit that changed no manifest entry.
+      - name: Verify asset hashes
+        run: |
+          if [ "${{ github.event.inputs.hash_scope }}" = "all" ]; then
+            python3 scripts/verify_manifest_hashes.py manifest.json --all --limit "${{ github.event.inputs.hash_limit || 5 }}"
+          else
+            python3 scripts/verify_manifest_hashes.py manifest.json --changed
+          fi

@@ -54,12 +54,23 @@ def previous_manifest(path: Path):
     try:
         out = subprocess.run(
             ["git", "show", f"HEAD~1:{path.as_posix()}"],
-            cwd=path.resolve().parent, capture_output=True, text=True, timeout=30,
+            cwd=path.resolve().parent, capture_output=True, timeout=30,
+            # encoding, explicitly. With text=True Python decodes using the locale codec,
+            # and on Windows the manifest's UTF-8 BOM (EF BB BF) arrives as the three
+            # characters ï»¿ rather than U+FEFF — so stripping U+FEFF did nothing and
+            # json.loads failed on byte 0. The failure then looked like "no previous
+            # manifest", i.e. a missing check reported as an absent input.
+            encoding="utf-8-sig",
         )
         if out.returncode != 0:
+            print(f"  (git show HEAD~1 failed: {out.stderr.strip()[:120]})")
             return None
-        return json.loads(out.stdout.lstrip("﻿"))
-    except Exception:
+        return json.loads(out.stdout)
+    except Exception as ex:
+        # Say why. A bare `return None` here turned a decoding bug into a silent
+        # "nothing to check", which is how this script's first CI run passed green
+        # while verifying nothing at all.
+        print(f"  (could not read the previous manifest: {type(ex).__name__}: {ex})")
         return None
 
 
@@ -115,9 +126,15 @@ def main() -> int:
             print("Refusing to download all 453 entries implicitly. Re-run with --all if that is what you want.")
             return 0
         else:
-            old = {e.get("path"): e.get("sha256") for e in prev.get("files", [])}
-            todo = [t for t in todo if t[1] and old.get(t[0]) != t[2]]
-            print(f"{len(todo)} entr(ies) changed since HEAD~1")
+            # Compare (sha256, url), not sha256 alone. The first real CI run of this script
+            # checked ZERO entries and reported success, because the commit it ran on
+            # repointed a URL without changing the hash — and a repointed URL is exactly
+            # the case worth verifying: the content at the new location is unproven until
+            # it is fetched and hashed. Filtering on the hash alone made a silent no-op
+            # look like a passing check.
+            old = {e.get("path"): (e.get("sha256"), e.get("url")) for e in prev.get("files", [])}
+            todo = [t for t in todo if t[1] and old.get(t[0]) != (t[2], t[1])]
+            print(f"{len(todo)} entr(ies) with a changed hash or url since HEAD~1")
 
     # unreachable is tracked apart from failed on purpose. Counting a network error as a
     # hash mismatch means a transient blip reports "your release is corrupt" — a false
