@@ -8,6 +8,12 @@
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.2/GDMO.exe"
   },
   {
+   "path": "Data/interface/Serch/terminus_btn_go.tga",
+   "sha256": "57284a9387f78bc8ff0549a168fbc09216763a9274d5f86c87c0b63c63e2a221",
+   "size": 8466,
+   "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.7.2/terminus_btn_go.tga"
+  },
+  {
    "path": "Data/interface/MainOption/terminus_scan.tga",
    "sha256": "1184b882c03a772d75ad7c10486d3571498fd1f704feab0a4032a0539134ac19",
    "size": 20012,
