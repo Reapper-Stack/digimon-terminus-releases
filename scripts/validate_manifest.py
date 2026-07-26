@@ -126,10 +126,18 @@ def validate(manifest_path: Path) -> list[str]:
         if not isinstance(entry, dict):
             errors.append(f"{where}: must be an object")
             continue
-        extra = set(entry) - {"path", "offset", "size", "sha256_after", "url", "label"}
+        extra = set(entry) - {"path", "offset", "size", "sha256_after", "url", "label", "mode"}
         if extra:
             errors.append(f"{where}: unexpected keys {sorted(extra)}")
         check_common(entry, where)
+        # mode is optional; missing/null means "inplace" for backward compatibility
+        # (Updater.cs:52). "append" extends the target file instead of requiring
+        # offset+size <= current length, which is what lets a pack grow without
+        # re-shipping the whole blob. The launcher has supported it since v0.3.0;
+        # this validator was the only thing rejecting it.
+        mode = entry.get("mode")
+        if mode is not None and mode not in ("inplace", "append"):
+            errors.append(f"{where}: mode must be 'inplace' or 'append' when present, got {mode!r}")
         offset = entry.get("offset")
         if not _int(offset) or offset < 0:
             errors.append(f"{where}: offset must be a non-negative integer, got {offset!r}")

@@ -1,11 +1,14 @@
-{
+﻿{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/Reapper-Stack/digimon-terminus-releases/schema/manifest.schema.json",
   "title": "Digimon Terminus release manifest",
   "description": "Auto-update manifest consumed by the DigimonTerminus launcher. Lists every file the client must have (full downloads) plus binary patches applied at a byte offset inside an existing pack file.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "files"],
+  "required": [
+    "version",
+    "files"
+  ],
   "properties": {
     "version": {
       "description": "Manifest schema version. Bump only when the manifest format itself changes, not on every release.",
@@ -15,12 +18,16 @@
     "files": {
       "description": "Full files the launcher downloads and verifies by SHA-256. A file is (re)downloaded when its local hash does not match.",
       "type": "array",
-      "items": { "$ref": "#/definitions/file" }
+      "items": {
+        "$ref": "#/definitions/file"
+      }
     },
     "patches": {
       "description": "Binary patches written at a byte offset inside an already-present file (e.g. a large pack). Used to avoid re-downloading a whole multi-GB pack for a small change.",
       "type": "array",
-      "items": { "$ref": "#/definitions/patch" }
+      "items": {
+        "$ref": "#/definitions/patch"
+      }
     }
   },
   "definitions": {
@@ -37,7 +44,12 @@
     "file": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "sha256", "size", "url"],
+      "required": [
+        "path",
+        "sha256",
+        "size",
+        "url"
+      ],
       "properties": {
         "path": {
           "type": "string",
@@ -45,15 +57,30 @@
           "description": "Destination path relative to the client install root. Forward slashes.",
           "pattern": "^[^\\\\]+$"
         },
-        "sha256": { "$ref": "#/definitions/sha256" },
-        "size": { "type": "integer", "minimum": 0, "description": "Expected file size in bytes." },
-        "url": { "$ref": "#/definitions/releaseUrl" }
+        "sha256": {
+          "$ref": "#/definitions/sha256"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Expected file size in bytes."
+        },
+        "url": {
+          "$ref": "#/definitions/releaseUrl"
+        }
       }
     },
     "patch": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "offset", "size", "sha256_after", "url", "label"],
+      "required": [
+        "path",
+        "offset",
+        "size",
+        "sha256_after",
+        "url",
+        "label"
+      ],
       "properties": {
         "path": {
           "type": "string",
@@ -61,11 +88,36 @@
           "description": "Target file the patch bytes are written into.",
           "pattern": "^[^\\\\]+$"
         },
-        "offset": { "type": "integer", "minimum": 0, "description": "Byte offset within the target file where the patch payload is written." },
-        "size": { "type": "integer", "minimum": 0, "description": "Length in bytes of the patch payload." },
-        "sha256_after": { "$ref": "#/definitions/sha256", "description": "Expected SHA-256 of the target file AFTER the patch is applied." },
-        "url": { "$ref": "#/definitions/releaseUrl" },
-        "label": { "type": "string", "minLength": 1, "description": "Human-readable name for the patch, for logs/UI." }
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Byte offset within the target file where the patch payload is written."
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Length in bytes of the patch payload."
+        },
+        "sha256_after": {
+          "$ref": "#/definitions/sha256",
+          "description": "SHA-256 of the PATCH CHUNK -- the bytes at [offset, offset+size) once the patch is applied. NOT the hash of the whole target file. Used for both up-to-date detection and download integrity (Updater.cs:604-688)."
+        },
+        "url": {
+          "$ref": "#/definitions/releaseUrl"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable name for the patch, for logs/UI."
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "inplace",
+            "append"
+          ],
+          "description": "Optional. Missing or null means 'inplace' (backward compatible). 'inplace' requires offset+size <= the target's current length. 'append' extends the target file, which is how a pack grows without re-shipping the whole blob. Launchers before v0.3.0 reject append patches via the inplace bounds check, by design."
+        }
       }
     }
   }
