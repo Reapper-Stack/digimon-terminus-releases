@@ -19,6 +19,15 @@ reaches players directly. Treat changes to it with care.
      `sha256_before` from an **unpatched** copy of the target:
      `python3 scripts/derive_patch_preimages.py --baseline <path> [--write]`.
    - Keep the file UTF-8 **with BOM** (the .NET pipeline writes it that way).
+   - To re-point `GDMO.exe` at a new release, use `bump_gdmo.py` rather than editing
+     by hand — it reads the currently published version out of the manifest, refuses
+     anything at or below it unless `--allow-downgrade`, backs the file up first, and
+     re-reads what it wrote:
+
+     ```sh
+     python3 bump_gdmo.py --version v0.7.4 --sha256 <64hex> --size <bytes> --dry-run
+     ```
+
 3. **Validate locally** before pushing:
 
    ```sh
