@@ -2749,6 +2749,7 @@
    "path": "Data/Pack01.pf",
    "offset": 9253093756,
    "size": 1036928,
+   "sha256_before": ["76a600332d16cad49a2ca18e99da02665d40bfc188f3bd8838a1abb1a5bfc7f7"],
    "sha256_after": "3be3f4637f8c6da3812d23c7e488e1923de09a1f96bb4e70503acf3555389a56",
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.8/lobby_login_bg.bin",
    "label": "lobby_login_bg"
@@ -2757,6 +2758,7 @@
    "path": "Data/Pack01.pf",
    "offset": 9254130952,
    "size": 708684,
+   "sha256_before": ["163c90bbbfffe451b4720071e1a13732fa3f0381b5cf65711a4bc2ca0633d415"],
    "sha256_after": "6969f89c186ad772361ebf775e8a29d9ceff449a83148904cc9e94f91068d723",
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.8/lobby_login_panel.bin",
    "label": "lobby_login_panel"
@@ -2765,6 +2767,7 @@
    "path": "Data/Pack01.pf",
    "offset": 9258387920,
    "size": 1036928,
+   "sha256_before": ["9b0f04b1f3027d1423e81fecd86b43f30d964f5f7048d1e93f9119d97aa75e56"],
    "sha256_after": "f0e1a622e3016c69c9903260d5163dd0b25375446fa5ee23ff4bcab76e2e2fb9",
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.8/lobby_server_sel_bg.bin",
    "label": "lobby_server_sel_bg"
@@ -2773,6 +2776,7 @@
    "path": "Data/Pack01.pf",
    "offset": 9251127272,
    "size": 1036928,
+   "sha256_before": ["c5690b8c5ec35452b4a6a63cf4810ceabf5aa852c802f5d2096b05c7f174de75"],
    "sha256_after": "4aca6b5d15b0302296c7d24854879c55820f1c6424af8c57cb72527bbca002e0",
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.8/lobby_char_sel_bg.bin",
    "label": "lobby_char_sel_bg"
@@ -2781,6 +2785,7 @@
    "path": "Data/Pack01.pf",
    "offset": 9136608410,
    "size": 131200,
+   "sha256_before": ["7e5c4a22e4b3afe9928926e97cd8e1e9ea015993859957d50d84ebfd03395546"],
    "sha256_after": "36d6fd6dd5392ebc83d27bdd86da8109e3467141f4b821e09ff813c34d66e48f",
    "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.5.5/sicon02_gammamon_skills.bin",
    "label": "sicon02_gammamon_skills"

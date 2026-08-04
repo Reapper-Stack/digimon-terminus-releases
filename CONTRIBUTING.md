@@ -15,7 +15,9 @@ reaches players directly. Treat changes to it with care.
 2. **Update `manifest.json`**:
    - For a full file: set its `path`, `sha256`, `size`, and the release `url`.
    - For a patch: set `path` (the target file), `offset`, `size`,
-     `sha256_after`, `url`, and `label`.
+     `sha256_before`, `sha256_after`, `url`, and `label`. Derive
+     `sha256_before` from an **unpatched** copy of the target:
+     `python3 scripts/derive_patch_preimages.py --baseline <path> [--write]`.
    - Keep the file UTF-8 **with BOM** (the .NET pipeline writes it that way).
 3. **Validate locally** before pushing:
 
@@ -45,6 +47,9 @@ check to pass still only affects PR merges, not the pipeline's direct pushes.
 ## Invariants the validator enforces
 
 - `sha256` / `sha256_after` are 64-char lowercase hex.
+- Every patch declares a non-empty `sha256_before` list of 64-char lowercase hex,
+  with no duplicates and never containing its own `sha256_after`. A patch without
+  it is refused by the launcher at runtime, so shipping one would be a dead patch.
 - `size` and `offset` are non-negative integers.
 - Every `url` is a pinned `…/releases/download/vX.Y.Z/…` URL for this repo.
 - Paths stay inside the install root: relative, forward-slashed, no `..`,
@@ -59,9 +64,17 @@ Patches write bytes at a fixed `offset` inside a file that is **assumed to
 already exist locally** (e.g. a large base `Data/Pack*.pf`). The manifest does
 not download that base file, so:
 
-- Only patch a target whose expected base content is known. `sha256_after` is
-  the post-condition; if the client's base file differs, the result won't match
-  and the launcher should surface the failure rather than run a corrupt file.
+- Only patch a target whose expected base content is known — and say so in
+  `sha256_before`. That list is the pre-condition and the launcher enforces it:
+  content that is neither an accepted pre-state nor the finished `sha256_after`
+  is refused, untouched. Until this field existed the launcher wrote the payload
+  whenever the target was "not already patched", so a client on a different base
+  build had megabytes of unrelated data overwritten inside a pack with no backup,
+  and the log still said `Patched OK`.
+- `sha256_before` is a **list** so a patch that supersedes an earlier one at the
+  same offset can accept both the original bytes and the superseded patch's
+  `sha256_after`. With a single value one of those two player populations could
+  never be patched again.
 - When adding several patches to the same target, double-check their byte
   ranges do not overlap. The validator now checks this, but keep offsets and
   sizes accurate at the source.

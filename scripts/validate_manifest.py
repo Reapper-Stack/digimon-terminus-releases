@@ -9,7 +9,8 @@ Checks:
   - file is valid JSON (BOM tolerated)
   - top-level shape: version (int >= 1), files (list), optional patches (list)
   - every file entry: path/sha256/size/url present and well-typed
-  - every patch entry: path/offset/size/sha256_after/url/label present and well-typed
+  - every patch entry: path/offset/size/sha256_before/sha256_after/url/label present
+    and well-typed (sha256_before is a non-empty list and must not contain sha256_after)
   - SHA-256 values are 64-char lowercase hex
   - sizes/offsets are non-negative integers
   - URLs point at this repo's GitHub Releases and are pinned to a vX.Y tag
@@ -126,7 +127,7 @@ def validate(manifest_path: Path) -> list[str]:
         if not isinstance(entry, dict):
             errors.append(f"{where}: must be an object")
             continue
-        extra = set(entry) - {"path", "offset", "size", "sha256_after", "url", "label", "mode"}
+        extra = set(entry) - {"path", "offset", "size", "sha256_before", "sha256_after", "url", "label", "mode"}
         if extra:
             errors.append(f"{where}: unexpected keys {sorted(extra)}")
         check_common(entry, where)
@@ -144,6 +145,24 @@ def validate(manifest_path: Path) -> list[str]:
         sha = entry.get("sha256_after")
         if not isinstance(sha, str) or not SHA256_RE.match(sha):
             errors.append(f"{where}: sha256_after must be 64-char lowercase hex, got {sha!r}")
+        # sha256_before lists every pre-patch state the launcher may overwrite. It is
+        # mandatory: a patch without it tells the launcher to write into a file it
+        # cannot identify, and the launcher (correctly) refuses such an entry at
+        # runtime -- so an entry missing it would ship as a silently dead patch.
+        before = entry.get("sha256_before")
+        if not isinstance(before, list) or not before:
+            errors.append(f"{where}: sha256_before must be a non-empty list of pre-patch hashes, got {before!r}")
+        else:
+            for j, h in enumerate(before):
+                if not isinstance(h, str) or not SHA256_RE.match(h):
+                    errors.append(f"{where}: sha256_before[{j}] must be 64-char lowercase hex, got {h!r}")
+            if len(set(before)) != len(before):
+                errors.append(f"{where}: sha256_before contains duplicate hashes")
+            if sha in before:
+                errors.append(
+                    f"{where}: sha256_before contains sha256_after -- the post-patch state is "
+                    f"already handled as 'already applied', listing it as a pre-state is a mistake"
+                )
         label = entry.get("label")
         if not isinstance(label, str) or not label:
             errors.append(f"{where}: label must be a non-empty string")

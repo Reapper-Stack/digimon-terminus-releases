@@ -77,6 +77,7 @@
         "path",
         "offset",
         "size",
+        "sha256_before",
         "sha256_after",
         "url",
         "label"
@@ -98,9 +99,18 @@
           "minimum": 0,
           "description": "Length in bytes of the patch payload."
         },
+        "sha256_before": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/sha256"
+          },
+          "description": "Every ACCEPTED pre-patch state of the bytes at [offset, offset+size). The launcher refuses to write unless the target's current bytes hash to one of these (or already to sha256_after). Without it the launcher cannot tell 'needs patching' from 'this is not the file the offsets were computed against', and silently corrupts a multi-GB pack it has no backup of. A list so a patch that supersedes an earlier one at the same offset can accept both the original bytes and the superseded patch's sha256_after."
+        },
         "sha256_after": {
           "$ref": "#/definitions/sha256",
-          "description": "SHA-256 of the PATCH CHUNK -- the bytes at [offset, offset+size) once the patch is applied. NOT the hash of the whole target file. Used for both up-to-date detection and download integrity (Updater.cs:604-688)."
+          "description": "SHA-256 of the PATCH CHUNK -- the bytes at [offset, offset+size) once the patch is applied. NOT the hash of the whole target file. Used for up-to-date detection, download integrity, and the post-write read-back check (Updater.cs)."
         },
         "url": {
           "$ref": "#/definitions/releaseUrl"

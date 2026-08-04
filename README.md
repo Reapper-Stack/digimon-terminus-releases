@@ -17,8 +17,12 @@ This repository is **data + process**, not source code. It holds two things:
    re-verifies the hash.
 3. For each entry under `patches`, it writes a small binary payload at a byte
    `offset` inside an already-present file (used for multi-GB pack files where
-   re-downloading the whole pack for a small change would be wasteful), then
-   verifies the target file matches `sha256_after`.
+   re-downloading the whole pack for a small change would be wasteful). Before
+   writing it hashes the bytes it is about to overwrite: already `sha256_after`
+   means the patch is applied and is skipped, one of `sha256_before` means it is
+   safe to apply, **anything else is refused** — that install's base file is not
+   the build the offset was computed against. After writing it reads the window
+   back and confirms it matches `sha256_after`.
 
 ## Manifest format
 
@@ -42,7 +46,9 @@ Tooling that reads it should decode with `utf-8-sig`. The authoritative shape is
       "path": "Data/Pack01.pf",       // file the patch is written into
       "offset": 9253093756,           // byte offset within that file
       "size": 1036928,                // length of the patch payload
-      "sha256_after": "…64 hex…",     // expected hash of the target AFTER patching
+      "sha256_before": ["…64 hex…"],  // every accepted pre-patch state of those bytes;
+                                      // anything else and the launcher refuses to write
+      "sha256_after": "…64 hex…",     // expected hash of those bytes AFTER patching
       "url": "https://github.com/Reapper-Stack/digimon-terminus-releases/releases/download/v0.2.8/lobby_login_bg.bin",
       "label": "lobby_login_bg"       // human-readable name for logs/UI
     }
@@ -79,5 +85,6 @@ on every push or PR that touches the manifest, schema, or validator.
 
 1. Upload the new binaries as assets on a **GitHub Release** with a `vX.Y.Z` tag.
 2. Update `manifest.json` — the entry's `url`, `sha256`, and `size` (and
-   `sha256_after`/`offset` for patches).
+   `sha256_before`/`sha256_after`/`offset` for patches; derive `sha256_before`
+   with `scripts/derive_patch_preimages.py --baseline <unpatched copy>`).
 3. Run `python3 scripts/validate_manifest.py` locally, or let CI verify on push.
