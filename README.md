@@ -1,5 +1,7 @@
 # digimon-terminus-releases
 
+> **ARCHIVED 2026-11-09.** This was the update feed of the retired Gamebryo client. Digimon Terminus now runs on the Unity client; its launcher channel is [Reapper-Stack/terminus-launcher](https://github.com/Reapper-Stack/terminus-launcher).
+
 Auto-update payloads and the release manifest for the **Digimon Terminus** client.
 
 This repository is **data + process**, not source code. It holds two things:
